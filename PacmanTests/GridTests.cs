@@ -26,5 +26,15 @@ namespace PacmanTests
             
             Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(1,1));
         }
+        
+        [Fact]
+        public void given_BlankSpacesCoordinatesListContainsOneOne_when_AddBlankSpaces_then_OneOneContainsBlankSpace()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19);
+
+            grid = _gridBuilder.AddBlankSpaces(grid, new List<Coordinates> {new Coordinates(1, 1)});
+            
+            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(1,1));
+        }
     }
 }

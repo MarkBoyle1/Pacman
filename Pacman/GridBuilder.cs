@@ -23,5 +23,15 @@ namespace Pacman
             
             return grid;
         }
+        
+        public Grid AddBlankSpaces(Grid grid, List<Coordinates> coordinates)
+        {
+            foreach (var coordinate in coordinates)
+            {
+                grid.Surface[coordinate.GetRow()][coordinate.GetColumn()] = DisplaySymbol.BlankSpace;
+            }
+            
+            return grid;
+        }
     }
 }
