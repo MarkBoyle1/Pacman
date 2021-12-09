@@ -2,11 +2,16 @@ namespace Pacman
 {
     public class Grid
     {
-        public string[][] grid;
+        public string[][] Surface;
 
-        public Grid(string[][] grid)
+        public Grid(string[][] surface)
         {
-            this.grid = grid;
+            this.Surface = surface;
+        }
+
+        public string GetPoint(int row, int column)
+        {
+            return Surface[row][column];
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Pacman;
 using Xunit;
 
@@ -13,7 +14,17 @@ namespace PacmanTests
         {
             Grid emptyGrid = _gridBuilder.GenerateEmptyGrid(19);
             
-            Assert.Equal(19, emptyGrid.grid[0].Length);
+            Assert.Equal(19, emptyGrid.Surface[0].Length);
+        }
+        
+        [Fact]
+        public void given_WallCoordinatesListContainsOneOne_when_AddWalls_then_OneOneContainsAWall()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19);
+
+            grid = _gridBuilder.AddWalls(grid, new List<Coordinates> {new Coordinates(1, 1)});
+            
+            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(1,1));
         }
     }
 }
