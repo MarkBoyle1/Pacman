@@ -6,7 +6,7 @@ namespace Pacman
     {
         public int GetGridWidth();
         public int GetGridHeight();
-        public List<Coordinates> GetWallCoordinates();
-        public List<Coordinates> GetBlankSpacesCoordinates();
+        public List<Coordinate> GetWallCoordinates();
+        public List<Coordinate> GetBlankSpacesCoordinates();
     }
 }

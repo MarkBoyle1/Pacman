@@ -22,9 +22,9 @@ namespace PacmanTests
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
-            grid = _gridBuilder.AddWalls(grid, new List<Coordinates> {new Coordinates(1, 1)});
+            grid = _gridBuilder.AddWalls(grid, new List<Coordinate> {new Coordinate(1, 1)});
             
-            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(1,1));
+            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
@@ -32,9 +32,9 @@ namespace PacmanTests
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
-            grid = _gridBuilder.AddBlankSpaces(grid, new List<Coordinates> {new Coordinates(1, 1)});
+            grid = _gridBuilder.AddBlankSpaces(grid, new List<Coordinate> {new Coordinate(1, 1)});
             
-            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(1,1));
+            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
@@ -44,12 +44,12 @@ namespace PacmanTests
                 (
                     19, 
                     21,
-                    new List<Coordinates>(){new Coordinates(2,2)}, 
-                    new List<Coordinates>(){new Coordinates(1,1)}
+                    new List<Coordinate>(){new Coordinate(2,2)}, 
+                    new List<Coordinate>(){new Coordinate(1,1)}
                 );
 
-            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(2,2));
-            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(1,1));
+            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2, 2)));
+            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
@@ -65,7 +65,17 @@ namespace PacmanTests
                 level.GetBlankSpacesCoordinates()
             );
 
-            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(2,2));
+            Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2,2)));
+        }
+
+        [Fact]
+        public void UpdateBoard()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
+
+            grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.PacmanEastFacing, new Coordinate(1,1));
+            
+            Assert.Equal(DisplaySymbol.PacmanEastFacing, grid.GetPoint(new Coordinate(1,1)));
         }
     }
 }

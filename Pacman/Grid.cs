@@ -6,12 +6,22 @@ namespace Pacman
 
         public Grid(string[][] surface)
         {
-            this.Surface = surface;
+            Surface = surface;
         }
 
-        public string GetPoint(int row, int column)
+        public string GetPoint(Coordinate coordinate)
         {
-            return Surface[row][column];
+            return Surface[coordinate.GetRow()][coordinate.GetColumn()];
+        }
+
+        public int GetWidth()
+        {
+            return 19;
+        }
+
+        public int GetHeight()
+        {
+            return 21;
         }
     }
 }
