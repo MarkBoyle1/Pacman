@@ -5,11 +5,21 @@ namespace Pacman
 {
     public class GridBuilder
     {
-        public Grid GenerateEmptyGrid(int sizeOfGrid)
-        {
-            string[][] emptyGrid = new string[sizeOfGrid][];
 
-            emptyGrid = emptyGrid.Select(x => new string[sizeOfGrid].Select(x => ".").ToArray()).ToArray();
+        public Grid GenerateInitialGrid(int width, int height, List<Coordinates> wallCoordinates,
+            List<Coordinates> blankSpacesCoordinates)
+        {
+            Grid grid = GenerateEmptyGrid(width, height);
+            grid = AddWalls(grid, wallCoordinates);
+            grid = AddBlankSpaces(grid, blankSpacesCoordinates);
+
+            return grid;
+        }
+        public Grid GenerateEmptyGrid(int width, int height)
+        {
+            string[][] emptyGrid = new string[height][];
+
+            emptyGrid = emptyGrid.Select(x => new string[width].Select(x => DisplaySymbol.Dot).ToArray()).ToArray();
             
             return new Grid(emptyGrid);
         }
