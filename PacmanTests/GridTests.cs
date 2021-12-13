@@ -69,7 +69,7 @@ namespace PacmanTests
         }
 
         [Fact]
-        public void UpdateBoard()
+        public void given_CoordinateEqualsOneOne_and_SymbolEqualsPacmanEastFacing_when_UpdateGrid_then_OneOneEqualsPacmanEastFacing()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 

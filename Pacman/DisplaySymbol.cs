@@ -9,5 +9,6 @@ namespace Pacman
         public const string PacmanWestFacing = ">";
         public const string PacmanNorthFacing = "v";
         public const string PacmanSouthFacing = "^";
+        public const string DefaultPacmanStartingSymbol = PacmanEastFacing;
     }
 }

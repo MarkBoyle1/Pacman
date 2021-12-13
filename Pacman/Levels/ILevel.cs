@@ -8,5 +8,6 @@ namespace Pacman
         public int GetGridHeight();
         public List<Coordinate> GetWallCoordinates();
         public List<Coordinate> GetBlankSpacesCoordinates();
+        public Coordinate GetPacmanStartingPosition();
     }
 }

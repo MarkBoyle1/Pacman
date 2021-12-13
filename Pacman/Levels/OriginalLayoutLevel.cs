@@ -7,6 +7,7 @@ namespace Pacman
     {
         private const int GridWidth = 19;
         private const int GridHeight = 21;
+        private Coordinate PacmanStartingPosition = new Coordinate(9, 11);
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -241,6 +242,11 @@ namespace Pacman
         public List<Coordinate> GetBlankSpacesCoordinates()
         {
             return blankSpacesCoordinates;
+        }
+
+        public Coordinate GetPacmanStartingPosition()
+        {
+            return PacmanStartingPosition;
         }
     }
 }
