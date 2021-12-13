@@ -10,6 +10,7 @@ namespace Pacman
 
         public Grid MakeCharacterMove(Grid grid, Character character)
         {
+            grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.BlankSpace, character.GetCoordinate());
             Coordinate coordinate = character.GetMove();
             return _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
         }

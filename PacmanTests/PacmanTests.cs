@@ -77,5 +77,18 @@ namespace PacmanTests
             
             Assert.Equal(DisplaySymbol.PacmanWestFacing, grid.GetPoint(new Coordinate(9,10)));
         }
+        
+        [Fact]
+        public void given_startingPositionEqualsNineEleven_when_MaPkeCharacterMove_then_NineElevenEqualsDot()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
+            grid = _engine.PlacePacmanOnStartingPosition(grid, new OriginalLayoutLevel());
+
+            IUserInput input = new TestInput(Constants.West);
+            Character pacman = new PacmanCharacter(input);
+            grid = _engine.MakeCharacterMove(grid, pacman);
+            
+            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(9,11)));
+        }
     }
 }
