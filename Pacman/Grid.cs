@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Pacman
 {
     public class Grid
@@ -22,6 +24,29 @@ namespace Pacman
         public int GetHeight()
         {
             return 21;
+        }
+
+        public List<Coordinate> GetPossibleMoves(Coordinate coordinate)
+        {
+            List<Coordinate> possibleMoves = new List<Coordinate>();
+
+            List<Coordinate> surroundingSpaces = new List<Coordinate>()
+            {
+                new Coordinate(coordinate.GetRow() + 1, coordinate.GetColumn()),
+                new Coordinate(coordinate.GetRow() - 1, coordinate.GetColumn()),
+                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() + 1),
+                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() - 1),
+            };
+
+            foreach (var space in surroundingSpaces)
+            {
+                if (GetPoint(space) != DisplaySymbol.Wall)
+                {
+                    possibleMoves.Add(space);
+                }
+            }
+
+            return possibleMoves;
         }
     }
 }

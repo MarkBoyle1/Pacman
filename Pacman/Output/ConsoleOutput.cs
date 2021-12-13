@@ -6,6 +6,7 @@ namespace Pacman.Output
     {
         public void DisplayGrid(Grid grid)
         {
+            Console.Clear();
             for(int row = 0; row < 21; row++)
             {
                 for(int column = 0; column < 19; column++)
