@@ -1,4 +1,5 @@
 using Pacman;
+using Pacman.Input;
 using Xunit;
 
 namespace PacmanTests
@@ -18,6 +19,37 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, level);
             
             Assert.Equal(DisplaySymbol.DefaultPacmanStartingSymbol, grid.GetPoint(level.GetPacmanStartingPosition()));
+        }
+        
+        [Fact]
+        public void given_InputEqualsEast_and_currentLocationEqualsNineEleven_then_TenElevenEqualsPacmanEastFacing()
+        {
+            IUserInput input = new TestInput(Constants.East);
+            Character pacman = new PacmanCharacter(input);
+            Coordinate move = pacman.GetMove();
+            
+            Assert.Equal(9, move.GetRow());            
+            Assert.Equal(12, move.GetColumn());
+        }
+
+        [Fact]
+        public void given_InputEqualsEast_when_GetMove_then_SymbolEqualsPacmanEastFacing()
+        {
+            IUserInput input = new TestInput(Constants.East);
+            Character pacman = new PacmanCharacter(input);
+            Coordinate move = pacman.GetMove();
+            
+            Assert.Equal(DisplaySymbol.PacmanEastFacing, pacman.GetSymbol());
+        }
+        
+        [Fact]
+        public void given_InputEqualsNorth_when_GetMove_then_SymbolEqualsPacmanNorthFacing()
+        {
+            IUserInput input = new TestInput(Constants.North);
+            Character pacman = new PacmanCharacter(input);
+            Coordinate move = pacman.GetMove();
+            
+            Assert.Equal(DisplaySymbol.PacmanNorthFacing, pacman.GetSymbol());
         }
     }
 }

@@ -7,5 +7,10 @@ namespace Pacman
         {
             return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
         }
+
+        public Grid PlayNextTick(Grid grid)
+        {
+            return grid;
+        }
     }
 }
