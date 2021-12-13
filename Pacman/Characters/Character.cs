@@ -30,9 +30,9 @@ namespace Pacman
                 case Constants.West:
                     return new Coordinate(Coordinate.GetRow(), Coordinate.GetColumn() - 1);
                 case Constants.North:
-                    return new Coordinate(Coordinate.GetRow() + 1, Coordinate.GetColumn());
-                case Constants.South:
                     return new Coordinate(Coordinate.GetRow() - 1, Coordinate.GetColumn());
+                case Constants.South:
+                    return new Coordinate(Coordinate.GetRow() + 1, Coordinate.GetColumn());
                 default:
                     throw new InvalidInputException();
             }

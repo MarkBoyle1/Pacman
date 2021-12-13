@@ -51,5 +51,31 @@ namespace PacmanTests
             
             Assert.Equal(DisplaySymbol.PacmanNorthFacing, pacman.GetSymbol());
         }
+        
+        [Fact]
+        public void given_InputEqualsNorth_when_MakeCharacterMove_then_gridIsUpdated()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
+            grid = _engine.PlacePacmanOnStartingPosition(grid, new OriginalLayoutLevel());
+
+            IUserInput input = new TestInput(Constants.North);
+            Character pacman = new PacmanCharacter(input);
+            grid = _engine.MakeCharacterMove(grid, pacman);
+            
+            Assert.Equal(DisplaySymbol.PacmanNorthFacing, grid.GetPoint(new Coordinate(8,11)));
+        }
+        
+        [Fact]
+        public void given_InputEqualsWest_when_MakeCharacterMove_then_gridIsUpdated()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
+            grid = _engine.PlacePacmanOnStartingPosition(grid, new OriginalLayoutLevel());
+
+            IUserInput input = new TestInput(Constants.West);
+            Character pacman = new PacmanCharacter(input);
+            grid = _engine.MakeCharacterMove(grid, pacman);
+            
+            Assert.Equal(DisplaySymbol.PacmanWestFacing, grid.GetPoint(new Coordinate(9,10)));
+        }
     }
 }

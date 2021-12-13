@@ -8,9 +8,10 @@ namespace Pacman
             return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
         }
 
-        public Grid PlayNextTick(Grid grid)
+        public Grid MakeCharacterMove(Grid grid, Character character)
         {
-            return grid;
+            Coordinate coordinate = character.GetMove();
+            return _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
         }
     }
 }
