@@ -28,8 +28,8 @@ namespace PacmanTests
             Character pacman = new PacmanCharacter(input);
             Coordinate move = pacman.GetMove();
             
-            Assert.Equal(9, move.GetRow());            
-            Assert.Equal(12, move.GetColumn());
+            Assert.Equal(11, move.GetRow());            
+            Assert.Equal(10, move.GetColumn());
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace PacmanTests
             Character pacman = new PacmanCharacter(input);
             grid = _engine.MakeCharacterMove(grid, pacman);
             
-            Assert.Equal(DisplaySymbol.PacmanNorthFacing, grid.GetPoint(new Coordinate(8,11)));
+            Assert.Equal(DisplaySymbol.PacmanNorthFacing, grid.GetPoint(new Coordinate(10,9)));
         }
         
         [Fact]
@@ -75,7 +75,7 @@ namespace PacmanTests
             Character pacman = new PacmanCharacter(input);
             grid = _engine.MakeCharacterMove(grid, pacman);
             
-            Assert.Equal(DisplaySymbol.PacmanWestFacing, grid.GetPoint(new Coordinate(9,10)));
+            Assert.Equal(DisplaySymbol.PacmanWestFacing, grid.GetPoint(new Coordinate(11,8)));
         }
         
         [Fact]
@@ -88,7 +88,7 @@ namespace PacmanTests
             Character pacman = new PacmanCharacter(input);
             grid = _engine.MakeCharacterMove(grid, pacman);
             
-            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(9,11)));
+            Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(11,9)));
         }
     }
 }

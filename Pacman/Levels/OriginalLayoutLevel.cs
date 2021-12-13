@@ -7,7 +7,7 @@ namespace Pacman
     {
         private const int GridWidth = 19;
         private const int GridHeight = 21;
-        private Coordinate PacmanStartingPosition = new Coordinate(9, 11);
+        private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -81,10 +81,10 @@ namespace Pacman
             new Coordinate(6, 16),
             new Coordinate(6, 17),
             new Coordinate(6, 18),
-            new Coordinate(7, 2),
-            new Coordinate(7, 4),
-            new Coordinate(7, 14),
-            new Coordinate(7, 16),
+            new Coordinate(7, 3),
+            new Coordinate(7, 5),
+            new Coordinate(7, 13),
+            new Coordinate(7, 15),
             new Coordinate(8, 0),
             new Coordinate(8, 1),
             new Coordinate(8, 2),
@@ -122,10 +122,10 @@ namespace Pacman
             new Coordinate(10, 16),
             new Coordinate(10, 17),
             new Coordinate(10, 18),
-            new Coordinate(11, 2),
-            new Coordinate(11, 4),
-            new Coordinate(11, 14),
-            new Coordinate(11, 16),
+            new Coordinate(11, 3),
+            new Coordinate(11, 5),
+            new Coordinate(11, 13),
+            new Coordinate(11, 15),
             new Coordinate(12, 0),
             new Coordinate(12, 1),
             new Coordinate(12, 2),
@@ -181,9 +181,20 @@ namespace Pacman
             new Coordinate(17, 9),
             new Coordinate(17, 13),
             new Coordinate(17, 18),
-            new Coordinate(18, 1),
-            new Coordinate(18, 8),
-            new Coordinate(18, 10),
+            new Coordinate(18, 0),
+            new Coordinate(18, 2),
+            new Coordinate(18, 3),
+            new Coordinate(18, 4),
+            new Coordinate(18, 5),
+            new Coordinate(18, 6),
+            new Coordinate(18, 7),
+            new Coordinate(18, 9),
+            new Coordinate(18, 11),
+            new Coordinate(18, 12),
+            new Coordinate(18, 13),
+            new Coordinate(18, 14),
+            new Coordinate(18, 15),
+            new Coordinate(18, 16),
             new Coordinate(18, 18),
             new Coordinate(19, 0),
             new Coordinate(19, 18),
@@ -213,15 +224,15 @@ namespace Pacman
             new Coordinate(7, 0),
             new Coordinate(7, 1),
             new Coordinate(7, 2),
-            new Coordinate(7, 0),
-            new Coordinate(7, 1),
-            new Coordinate(7, 2),
+            new Coordinate(7, 16),
+            new Coordinate(7, 17),
+            new Coordinate(7, 18),
             new Coordinate(11, 0),
             new Coordinate(11, 1),
             new Coordinate(11, 2),
-            new Coordinate(11, 0),
-            new Coordinate(11, 1),
-            new Coordinate(11, 2)
+            new Coordinate(11, 16),
+            new Coordinate(11, 17),
+            new Coordinate(11, 18)
         };
 
         public int GetGridWidth()

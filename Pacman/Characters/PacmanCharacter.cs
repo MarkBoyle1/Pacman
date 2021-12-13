@@ -10,7 +10,7 @@ namespace Pacman
             : base()
         {
             _input = input;
-            Coordinate = new Coordinate(9, 11);
+            Coordinate = new Coordinate(11, 9);
             Symbol = DisplaySymbol.DefaultPacmanStartingSymbol;
         }
 
@@ -19,7 +19,9 @@ namespace Pacman
             string input = _input.GetUserInput();
 
             Symbol = UpdateSymbol(input);
-            return ConvertDirectionInputIntoCoordinate(input);
+            Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input);
+            Coordinate = coordinate;
+            return coordinate;
         }
 
         private string UpdateSymbol(string input)
