@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Pacman.Exceptions;
 using Pacman.Input;
@@ -20,8 +21,10 @@ namespace Pacman
 
         public override Coordinate GetMove(Grid grid)
         {
-            string input = _input.GetUserInput();
+            string input = GetValidInput();
+
             Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input);
+            
             List<Coordinate> possibleMoves = grid.GetPossibleMoves(Coordinate);
 
             while (true)
@@ -38,7 +41,8 @@ namespace Pacman
                 }
 
                 _output.DisplayMessage(OutputMessages.InvalidMove);
-                input = _input.GetUserInput();
+                input = GetValidInput();
+                
                 coordinate = ConvertDirectionInputIntoCoordinate(input);
             }
         }
@@ -58,6 +62,27 @@ namespace Pacman
                 default:
                     throw new InvalidInputException();
             }
+        }
+
+        private string GetValidInput()
+        {
+            string input = _input.GetUserInput();
+            
+            List<string> possibleInputs = new List<string>()
+            {
+                Constants.East,
+                Constants.North,
+                Constants.South,
+                Constants.West
+            };
+
+            while (!possibleInputs.Contains(input))
+            {
+                _output.DisplayMessage(OutputMessages.InvalidMove);
+                input = _input.GetUserInput();
+            }
+
+            return input;
         }
     }
 }

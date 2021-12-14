@@ -19,7 +19,7 @@ namespace Pacman
 
             Character character = new PacmanCharacter(_input, _output, level.GetPacmanStartingPosition());
 
-            for (int i = 0; i < 5; i++)
+            while(true)
             {
                 grid = MakeCharacterMove(grid, character);
                 _output.DisplayGrid(grid);
