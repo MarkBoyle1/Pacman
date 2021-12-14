@@ -18,12 +18,12 @@ namespace Pacman
 
         public int GetWidth()
         {
-            return 19;
+            return Surface[0].Length;
         }
 
         public int GetHeight()
         {
-            return 21;
+            return Surface.Length;
         }
 
         public List<Coordinate> GetPossibleMoves(Coordinate coordinate)

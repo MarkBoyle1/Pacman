@@ -14,10 +14,10 @@ namespace Pacman
             ILevel level = new OriginalLayoutLevel();
             Grid grid = _gridBuilder.GenerateInitialGrid(level.GetGridWidth(), level.GetGridHeight(),
                 level.GetWallCoordinates(), level.GetBlankSpacesCoordinates());
-            grid = PlacePacmanOnStartingPosition(grid, level);
+            grid = PlacePacmanOnStartingPosition(grid, level.GetPacmanStartingPosition());
             _output.DisplayGrid(grid);
 
-            Character character = new PacmanCharacter(_input);
+            Character character = new PacmanCharacter(_input, _output, level.GetPacmanStartingPosition());
 
             for (int i = 0; i < 5; i++)
             {
@@ -25,15 +25,30 @@ namespace Pacman
                 _output.DisplayGrid(grid);
             }
         }
-        public Grid PlacePacmanOnStartingPosition(Grid grid, ILevel level)
+        public Grid PlacePacmanOnStartingPosition(Grid grid, Coordinate startingPosition)
         {
-            return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
+            return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, startingPosition);
         }
 
         public Grid MakeCharacterMove(Grid grid, Character character)
         {
             grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.BlankSpace, character.GetCoordinate());
-            Coordinate coordinate = character.GetMove();
+            Coordinate coordinate = character.GetMove(grid);
+
+            if (grid.GetPoint(coordinate) == DisplaySymbol.Dot)
+            {
+                string eatingSymbol =
+                    character.Symbol is DisplaySymbol.PacmanEastFacing or DisplaySymbol.PacmanWestFacing
+                        ? DisplaySymbol.PacmanHorizontalEating
+                        : DisplaySymbol.PacmanVerticalEating;
+                
+                grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
+                _output.DisplayGrid(grid);
+                
+                grid = _gridBuilder.UpdateGrid(grid, eatingSymbol, coordinate);
+                _output.DisplayGrid(grid);
+            }
+            
             return _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
         }
     }

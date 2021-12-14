@@ -1,9 +1,14 @@
 using System;
+using System.Threading;
 
 namespace Pacman.Output
 {
     public class ConsoleOutput : IOutput
     {
+        public void DisplayMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
         public void DisplayGrid(Grid grid)
         {
             Console.Clear();
@@ -29,6 +34,7 @@ namespace Pacman.Output
                 }
                 Console.WriteLine();
             }
+            Thread.Sleep(300);
         }
     }
 }

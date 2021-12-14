@@ -6,7 +6,7 @@ namespace Pacman
     {
         public string Symbol;
         public Coordinate Coordinate;
-        public virtual Coordinate GetMove()
+        public virtual Coordinate GetMove(Grid grid)
         {
             return new Coordinate(1, 1);
         }

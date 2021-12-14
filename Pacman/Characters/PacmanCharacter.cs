@@ -1,27 +1,46 @@
+using System.Collections.Generic;
 using Pacman.Exceptions;
 using Pacman.Input;
+using Pacman.Output;
 
 namespace Pacman
 {
     public class PacmanCharacter : Character
     {
         private IUserInput _input;
-        public PacmanCharacter(IUserInput input)
+        private IOutput _output;
+        public PacmanCharacter(IUserInput input, IOutput output, Coordinate startingPosition)
             : base()
         {
             _input = input;
-            Coordinate = new Coordinate(11, 9);
+            _output = output;
+            Coordinate = startingPosition;
             Symbol = DisplaySymbol.DefaultPacmanStartingSymbol;
         }
 
-        public override Coordinate GetMove()
+        public override Coordinate GetMove(Grid grid)
         {
             string input = _input.GetUserInput();
-
-            Symbol = UpdateSymbol(input);
             Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input);
-            Coordinate = coordinate;
-            return coordinate;
+            List<Coordinate> possibleMoves = grid.GetPossibleMoves(Coordinate);
+
+            while (true)
+            {
+                foreach (var possibleMove in possibleMoves)
+                {
+                    if (possibleMove.GetRow() == coordinate.GetRow() &&
+                        possibleMove.GetColumn() == coordinate.GetColumn())
+                    {
+                        Symbol = UpdateSymbol(input);
+                        Coordinate = coordinate;
+                        return coordinate;
+                    }
+                }
+
+                _output.DisplayMessage(OutputMessages.InvalidMove);
+                input = _input.GetUserInput();
+                coordinate = ConvertDirectionInputIntoCoordinate(input);
+            }
         }
 
         private string UpdateSymbol(string input)
