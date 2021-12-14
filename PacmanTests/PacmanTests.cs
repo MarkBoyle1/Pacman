@@ -89,7 +89,7 @@ namespace PacmanTests
         }
         
         [Fact]
-        public void given_startingPositionEqualsNineEleven_when_MaPkeCharacterMove_then_NineElevenEqualsDot()
+        public void given_startingPositionEqualsNineEleven_when_MakeCharacterMove_then_NineElevenEqualsDot()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(11, 9));

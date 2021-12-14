@@ -12,9 +12,9 @@ namespace Pacman.Output
         public void DisplayGrid(Grid grid)
         {
             Console.Clear();
-            for(int row = 0; row < 21; row++)
+            for(int row = 0; row < grid.GetHeight(); row++)
             {
-                for(int column = 0; column < 19; column++)
+                for(int column = 0; column < grid.GetWidth(); column++)
                 {
                     string point = grid.GetPoint(new Coordinate(row, column));
                     
