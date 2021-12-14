@@ -1,11 +1,11 @@
 namespace Pacman
 {
-    public class Coordinates
+    public class Coordinate
     {
         private int Row;
         private int Column;
 
-        public Coordinates(int row, int column)
+        public Coordinate(int row, int column)
         {
             Row = row;
             Column = column;
