@@ -9,9 +9,11 @@ namespace Pacman.Output
         {
             Console.WriteLine(message);
         }
-        public void DisplayGrid(Grid grid)
+        public void DisplayGrid(GameState gameState)
         {
+            Grid grid = gameState.GetGrid();
             Console.Clear();
+            Console.WriteLine("Dots Remaining: " + gameState.GetGrid().GetDotsRemaining());
             for(int row = 0; row < grid.GetHeight(); row++)
             {
                 for(int column = 0; column < grid.GetWidth(); column++)
@@ -34,7 +36,7 @@ namespace Pacman.Output
                 }
                 Console.WriteLine();
             }
-            Thread.Sleep(300);
+            Thread.Sleep(200);
         }
     }
 }

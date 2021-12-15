@@ -67,6 +67,11 @@ namespace Pacman
                     }
                 }
             }
+
+            if (updatedGrid[coordinate.GetRow()][coordinate.GetColumn()] == DisplaySymbol.Dot)
+            {
+                dotsRemaining--;
+            }
             
             updatedGrid[coordinate.GetRow()][coordinate.GetColumn()] = symbol;
             

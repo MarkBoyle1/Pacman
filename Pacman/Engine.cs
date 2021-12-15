@@ -13,6 +13,7 @@ namespace Pacman
         private IUserInput _input;
         private int _gameScore;
         private List<Character> _characterList;
+        private GameState _gameState;
 
         public Engine()
         {
@@ -27,20 +28,22 @@ namespace Pacman
         {
             ILevel level = new OriginalLayoutLevel();
             Character pacman = new PacmanCharacter(_input, _output, level.GetPacmanStartingPosition());
+
             _characterList.Add(pacman);
             
             Grid grid = _gridBuilder.GenerateInitialGrid(level.GetGridWidth(), level.GetGridHeight(),
                 level.GetWallCoordinates(), level.GetBlankSpacesCoordinates());
             
-            grid = PlacePacmanOnStartingPosition(grid, pacman.Coordinate);
-            _output.DisplayGrid(grid);
 
-            GameState gameState = new GameState(grid, _gameScore, _characterList);
+            grid = PlacePacmanOnStartingPosition(grid, pacman.Coordinate);
+            _gameState = new GameState(grid, _gameScore, _characterList);
+            _output.DisplayGrid(_gameState);
+
             
             while(true)
             {
-                gameState = PlayOneTick(gameState);
-                _output.DisplayGrid(grid);
+                _gameState = PlayOneTick(_gameState);
+                _output.DisplayGrid(_gameState);
             }
         }
         public Grid PlacePacmanOnStartingPosition(Grid grid, Coordinate startingPosition)
@@ -80,10 +83,12 @@ namespace Pacman
                     : DisplaySymbol.PacmanVerticalEating;
                 
             grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
-            _output.DisplayGrid(grid);
+            _gameState = new GameState(grid, _gameScore, _characterList);
+            _output.DisplayGrid(_gameState);
                 
             grid = _gridBuilder.UpdateGrid(grid, eatingSymbol, coordinate);
-            _output.DisplayGrid(grid);
+            _gameState = new GameState(grid, _gameScore, _characterList);
+            _output.DisplayGrid(_gameState);
         }
     }
 }

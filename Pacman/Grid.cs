@@ -39,12 +39,12 @@ namespace Pacman
 
             List<Coordinate> surroundingSpaces = new List<Coordinate>()
             {
-                new Coordinate(coordinate.GetRow() + 1, coordinate.GetColumn()),
-                new Coordinate(coordinate.GetRow() - 1, coordinate.GetColumn()),
-                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() + 1),
-                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() - 1),
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow() + 1, coordinate.GetColumn())),
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow() - 1, coordinate.GetColumn())),
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow(), coordinate.GetColumn() + 1)), 
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow(), coordinate.GetColumn() - 1)),
             };
-
+            
             foreach (var space in surroundingSpaces)
             {
                 if (GetPoint(space) != DisplaySymbol.Wall)
@@ -55,5 +55,45 @@ namespace Pacman
 
             return possibleMoves;
         }
+        
+        public Coordinate WrapAroundGridIfRequired(Coordinate coordinate)
+        {
+            int xCoordinate = AdjustRowCoordinate(coordinate.GetRow());
+            int yCoordinate = AdjustColumnCoordinate(coordinate.GetColumn());
+        
+            return new Coordinate(xCoordinate, yCoordinate);
+        }
+        
+        private int AdjustRowCoordinate(int coordinate)
+        {
+            if (coordinate < 0)
+            {
+                return GetHeight() - 1;
+            }
+            
+            if (coordinate > GetHeight()- 1)
+            {
+                return 0;
+            }
+            
+            return coordinate;
+        }
+        
+        private int AdjustColumnCoordinate(int coordinate)
+        {
+            if (coordinate < 0)
+            {
+                return GetWidth() - 1;
+            }
+            
+            if (coordinate > GetWidth()- 1)
+            {
+                return 0;
+            }
+            
+            return coordinate;
+        }
+        
+        
     }
 }

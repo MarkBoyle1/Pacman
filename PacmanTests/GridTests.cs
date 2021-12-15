@@ -111,6 +111,16 @@ namespace PacmanTests
         }
         
         [Fact]
+        public void given_CoordinateEqualsZeroOne_and_NoWalls_when_GetPossibleMoves_then_return_ListWithFourCoordinates()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
+
+            List<Coordinate> possibleMoves = grid.GetPossibleMoves(new Coordinate(0,1));
+            
+            Assert.Equal(4, possibleMoves.Count);
+        }
+        
+        [Fact]
         public void given_WidthEqualsThreeAndHeightEqualsThree_when_GenerateEmptyGrid_then_DotsRemainingEqualsNine()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
