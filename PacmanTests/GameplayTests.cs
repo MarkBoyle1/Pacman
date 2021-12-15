@@ -26,7 +26,7 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(1, 1));
             List<Character> characterList = new List<Character>() {pacman};
 
-            GameState gameState = new GameState(grid, 0, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
 
             gameState = _engine.PlayOneTick(gameState);
             
@@ -43,7 +43,7 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(1, 1));
             List<Character> characterList = new List<Character>() {pacman};
 
-            GameState gameState = new GameState(grid, 0, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
 
             gameState = _engine.PlayOneTick(gameState);
             
@@ -60,7 +60,7 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(1, 1));
             List<Character> characterList = new List<Character>() {pacman};
 
-            GameState gameState = new GameState(grid, 0, characterList);
+            GameState gameState = new GameState(grid, 0, 1,characterList);
 
             gameState = _engine.PlayOneTick(gameState);
             
@@ -77,7 +77,7 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(1, 1));
             List<Character> characterList = new List<Character>() {pacman};
 
-            GameState gameState = new GameState(grid, 0, characterList);
+            GameState gameState = new GameState(grid, 0, 1,characterList);
 
             gameState = _engine.PlayOneTick(gameState);
             
@@ -94,11 +94,28 @@ namespace PacmanTests
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(2, 1));
             List<Character> characterList = new List<Character>() {pacman};
 
-            GameState gameState = new GameState(grid, 0, characterList);
+            GameState gameState = new GameState(grid, 0, 1,characterList);
 
             gameState = _engine.PlayOneTick(gameState);
             
             Assert.Equal(7, gameState.GetGrid().GetDotsRemaining());
+        }
+
+        [Fact]
+        public void given_PacmanEatsTheLastDot_when_PlayOneTick_then_LevelIncreasesByOne()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
+            
+            IUserInput input = new TestInput(new List<string>{Constants.East});
+            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
+            grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(0, 0));
+            List<Character> characterList = new List<Character>() {pacman};
+
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.PlayOneTick(gameState);
+            
+            Assert.Equal(2, gameState.GetLevel());
         }
     }
 }

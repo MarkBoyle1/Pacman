@@ -6,12 +6,14 @@ namespace Pacman
     {
         private Grid _grid;
         private int _score;
+        private int _level;
         private List<Character> _characterList;
 
-        public GameState(Grid grid, int score, List<Character> characterList)
+        public GameState(Grid grid, int score, int level, List<Character> characterList)
         {
             _grid = grid;
             _score = score;
+            _level = level;
             _characterList = characterList;
         }
 
@@ -23,6 +25,11 @@ namespace Pacman
         public Grid GetGrid()
         {
             return _grid;
+        }
+
+        public int GetLevel()
+        {
+            return _level;
         }
 
         public List<Character> GetCharacterList()
