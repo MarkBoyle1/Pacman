@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Pacman.Exceptions;
 
 namespace Pacman
@@ -42,6 +43,31 @@ namespace Pacman
                 default:
                     throw new InvalidInputException();
             }
+        }
+        
+        public List<Coordinate> GetPossibleMoves(Coordinate coordinate, Grid grid)
+        {
+            int gridWidth = grid.GetWidth();
+            int gridHeight = grid.GetHeight();
+            List<Coordinate> possibleMoves = new List<Coordinate>();
+
+            List<Coordinate> surroundingSpaces = new List<Coordinate>()
+            {
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow() + 1, coordinate.GetColumn()), gridWidth, gridHeight),
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow() - 1, coordinate.GetColumn()), gridWidth, gridHeight),
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow(), coordinate.GetColumn() + 1), gridWidth, gridHeight), 
+                WrapAroundGridIfRequired(new Coordinate(coordinate.GetRow(), coordinate.GetColumn() - 1), gridWidth, gridHeight),
+            };
+            
+            foreach (var space in surroundingSpaces)
+            {
+                if (grid.GetPoint(space) != DisplaySymbol.Wall)
+                {
+                    possibleMoves.Add(space);
+                }
+            }
+
+            return possibleMoves;
         }
         
         private Coordinate WrapAroundGridIfRequired(Coordinate coordinate, int gridWidth, int gridHeight)

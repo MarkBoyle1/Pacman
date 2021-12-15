@@ -40,7 +40,7 @@ namespace Pacman
             _output.DisplayGrid(_gameState);
 
             
-            while(true)
+            while(_gameState.GetGrid().GetDotsRemaining() > 0)
             {
                 _gameState = PlayOneTick(_gameState);
                 _output.DisplayGrid(_gameState);

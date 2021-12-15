@@ -25,7 +25,7 @@ namespace Pacman
 
             Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input, grid.GetWidth(), grid.GetHeight());
             
-            List<Coordinate> possibleMoves = grid.GetPossibleMoves(Coordinate);
+            List<Coordinate> possibleMoves = GetPossibleMoves(Coordinate, grid);
 
             while (true)
             {

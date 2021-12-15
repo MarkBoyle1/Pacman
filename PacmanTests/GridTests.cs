@@ -78,47 +78,9 @@ namespace PacmanTests
             Assert.Equal(DisplaySymbol.PacmanEastFacing, grid.GetPoint(new Coordinate(1,1)));
         }
 
-        [Fact]
-        public void given_CoordinateEqualsOneOne_and_WallsOnEachSideExceptOneTwo_when_GetPossibleMoves_then_return_ListWithOneTwo()
-        {
-            Grid grid = _gridBuilder.GenerateInitialGrid
-                (3,
-                    3, 
-                    new List<Coordinate>(){new Coordinate(1,0), new Coordinate(2,1), new Coordinate(0,1)},
-                new List<Coordinate>()
-                );
-
-            List<Coordinate> possibleMoves = grid.GetPossibleMoves(new Coordinate(1,1));
-            
-            Assert.Single(possibleMoves);
-            Assert.Equal(1, possibleMoves[0].GetRow());
-            Assert.Equal(2, possibleMoves[0].GetColumn());
-        }
         
-        [Fact]
-        public void given_CoordinateEqualsOneOne_and_WallsOnTwoSides_when_GetPossibleMoves_then_return_ListWithTwoCoordinates()
-        {
-            Grid grid = _gridBuilder.GenerateInitialGrid
-            (3,
-                3, 
-                new List<Coordinate>(){new Coordinate(1,0), new Coordinate(2,1)},
-                new List<Coordinate>()
-            );
-
-            List<Coordinate> possibleMoves = grid.GetPossibleMoves(new Coordinate(1,1));
-            
-            Assert.Equal(2, possibleMoves.Count);
-        }
         
-        [Fact]
-        public void given_CoordinateEqualsZeroOne_and_NoWalls_when_GetPossibleMoves_then_return_ListWithFourCoordinates()
-        {
-            Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
-
-            List<Coordinate> possibleMoves = grid.GetPossibleMoves(new Coordinate(0,1));
-            
-            Assert.Equal(4, possibleMoves.Count);
-        }
+        
         
         [Fact]
         public void given_WidthEqualsThreeAndHeightEqualsThree_when_GenerateEmptyGrid_then_DotsRemainingEqualsNine()
