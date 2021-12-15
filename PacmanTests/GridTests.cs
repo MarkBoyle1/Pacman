@@ -109,5 +109,13 @@ namespace PacmanTests
             
             Assert.Equal(2, possibleMoves.Count);
         }
+        
+        [Fact]
+        public void given_WidthEqualsThreeAndHeightEqualsThree_when_GenerateEmptyGrid_then_DotsRemainingEqualsNine()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
+            
+            Assert.Equal(9, grid.GetDotsRemaining());
+        }
     }
 }

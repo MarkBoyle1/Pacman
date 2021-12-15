@@ -66,5 +66,22 @@ namespace PacmanTests
             
             Assert.Single(gameState.GetCharacterList());
         }
+
+        [Fact]
+        public void given_dotsRemainingEqualsNine_and_PacmanEatsADot_when_PlayOneTick_then_dotsRemainingEqualsEight()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
+            
+            IUserInput input = new TestInput(new List<string>{Constants.East});
+            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(1,1));
+            grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(1, 1));
+            List<Character> characterList = new List<Character>() {pacman};
+
+            GameState gameState = new GameState(grid, 0, characterList);
+
+            gameState = _engine.PlayOneTick(gameState);
+            
+            Assert.Equal(8, gameState.GetGrid().GetDotsRemaining());
+        }
     }
 }

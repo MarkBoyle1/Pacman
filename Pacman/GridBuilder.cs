@@ -12,16 +12,19 @@ namespace Pacman
             Grid grid = GenerateEmptyGrid(width, height);
             grid = AddWalls(grid, wallCoordinates);
             grid = AddBlankSpaces(grid, blankSpacesCoordinates);
+            int dotsRemaining = height * width - wallCoordinates.Count - blankSpacesCoordinates.Count;
 
-            return grid;
+            return new Grid(grid.Surface, dotsRemaining);
         }
         public Grid GenerateEmptyGrid(int width, int height)
         {
             string[][] emptyGrid = new string[height][];
 
             emptyGrid = emptyGrid.Select(x => new string[width].Select(x => DisplaySymbol.Dot).ToArray()).ToArray();
+
+            int dotsRemaining = width * height;
             
-            return new Grid(emptyGrid);
+            return new Grid(emptyGrid, dotsRemaining);
         }
 
         public Grid AddWalls(Grid grid, List<Coordinate> coordinates)
@@ -47,6 +50,7 @@ namespace Pacman
         public Grid UpdateGrid(Grid grid, string symbol, Coordinate coordinate)
         {
             string[][] updatedGrid = new string[grid.GetHeight()][];
+            int dotsRemaining = 0;
             
             updatedGrid = updatedGrid.Select(x => new string[grid.GetWidth()]).ToArray();
                 
@@ -56,12 +60,17 @@ namespace Pacman
                 {
                     string currentSymbol = grid.GetPoint(new Coordinate(row,column));
                     updatedGrid[row][column] = currentSymbol;
+
+                    if (currentSymbol == DisplaySymbol.Dot)
+                    {
+                        dotsRemaining++;
+                    }
                 }
             }
             
             updatedGrid[coordinate.GetRow()][coordinate.GetColumn()] = symbol;
             
-            return new Grid(updatedGrid);
+            return new Grid(updatedGrid, dotsRemaining);
         }
     }
 }
