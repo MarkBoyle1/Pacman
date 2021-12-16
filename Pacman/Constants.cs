@@ -2,10 +2,9 @@ namespace Pacman
 {
     public class Constants
     {
-        public const string East = "e";
-        public const string West = "w";
-        public const string North = "n";
+        public const string East = "d";
+        public const string West = "a";
+        public const string North = "w";
         public const string South = "s";
-
     }
 }

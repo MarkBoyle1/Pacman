@@ -29,7 +29,7 @@ namespace Pacman
 
         public void RunProgram()
         {
-            _level = new TestLevel();
+            _level = new OriginalLayoutLevel();
             Character pacman = new PacmanCharacter(_input, _output, _level.GetPacmanStartingPosition());
 
             _characterList.Add(pacman);
@@ -61,6 +61,8 @@ namespace Pacman
             while (grid.GetDotsRemaining() > 0)
             {
                 gameState = PlayOneTick(gameState);
+                _output.DisplayGrid(gameState);
+
                 grid = gameState.GetGrid();
                 _output.DisplayGrid(_gameState);
             }
@@ -83,12 +85,12 @@ namespace Pacman
             Grid grid = gameState.GetGrid();
             Character pacman = gameState.GetCharacterList().First();
             
-            grid = MakeCharacterMove(grid, pacman);
-            
-            return new GameState(grid, _gameScore, _currentLevel, _characterList);
+            _gameState = MakeCharacterMove(grid, pacman);
+            _output.DisplayGrid(_gameState);
+            return _gameState;
         }
 
-        public Grid MakeCharacterMove(Grid grid, Character character)
+        public GameState MakeCharacterMove(Grid grid, Character character)
         {
             grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.BlankSpace, character.GetCoordinate());
             Coordinate coordinate = character.GetMove(grid);
@@ -97,9 +99,11 @@ namespace Pacman
             {
                 _gameScore++;
                 MakeEatingAnimation(grid, character, coordinate);
+                return _gameState;
             }
             
-            return _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
+            grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
+            return new GameState(grid, _gameScore, _currentLevel, _characterList);
         }
 
         private void MakeEatingAnimation(Grid grid, Character character, Coordinate coordinate)
@@ -114,6 +118,10 @@ namespace Pacman
             _output.DisplayGrid(_gameState);
                 
             grid = _gridBuilder.UpdateGrid(grid, eatingSymbol, coordinate);
+            _gameState = new GameState(grid, _gameScore, _currentLevel, _characterList);
+            _output.DisplayGrid(_gameState);
+            
+            grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
             _gameState = new GameState(grid, _gameScore, _currentLevel, _characterList);
             _output.DisplayGrid(_gameState);
         }
