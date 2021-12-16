@@ -10,7 +10,7 @@ namespace PacmanTests
     {
         private GridBuilder _gridBuilder = new GridBuilder();
         private Engine _engine = new Engine();
-        
+
         [Fact]
         public void given_PacmanMovesIntoADot_when_MakeCharacterMove_then_GameStateScoreIncreasesByOne()
         {
@@ -102,10 +102,11 @@ namespace PacmanTests
         }
 
         [Fact]
-        public void given_PacmanEatsTheLastDot_when_PlayOneTick_then_LevelIncreasesByOne()
+        public void given_PacmanEatsTheLastDot_when_PlayOneLevel_then_LevelIncreasesByOne()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
-            
+            ILevel level = new TestLevel();
+
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
             grid = _engine.PlacePacmanOnStartingPosition(grid, new Coordinate(0, 0));
@@ -113,9 +114,29 @@ namespace PacmanTests
 
             GameState gameState = new GameState(grid, 0, 1, characterList);
 
-            gameState = _engine.PlayOneTick(gameState);
+            gameState = _engine.PlayOneLevel(gameState, level);
             
             Assert.Equal(2, gameState.GetLevel());
+        }
+        
+        [Fact]
+        public void given_PacmanEatsTheLastDot_when_PlayOneTick_then_LayoutIsReset()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
+            ILevel level = new TestLevel();
+            
+            IUserInput input = new TestInput(new List<string>{Constants.East});
+            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), level.GetPacmanStartingPosition());
+            grid = _engine.PlacePacmanOnStartingPosition(grid, pacman.GetCoordinate());
+            List<Character> characterList = new List<Character>() {pacman};
+
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.PlayOneLevel(gameState, level);
+            
+            Assert.Equal(1, gameState.GetGrid().GetDotsRemaining());
+            Assert.Equal(0, pacman.GetCoordinate().GetRow());
+            Assert.Equal(0, pacman.GetCoordinate().GetColumn());
         }
     }
 }

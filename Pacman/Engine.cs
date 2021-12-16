@@ -15,6 +15,7 @@ namespace Pacman
         private List<Character> _characterList;
         private GameState _gameState;
         private int _currentLevel;
+        private ILevel _level;
 
         public Engine()
         {
@@ -28,13 +29,13 @@ namespace Pacman
 
         public void RunProgram()
         {
-            ILevel level = new OriginalLayoutLevel();
-            Character pacman = new PacmanCharacter(_input, _output, level.GetPacmanStartingPosition());
+            _level = new TestLevel();
+            Character pacman = new PacmanCharacter(_input, _output, _level.GetPacmanStartingPosition());
 
             _characterList.Add(pacman);
             
-            Grid grid = _gridBuilder.GenerateInitialGrid(level.GetGridWidth(), level.GetGridHeight(),
-                level.GetWallCoordinates(), level.GetBlankSpacesCoordinates());
+            Grid grid = _gridBuilder.GenerateInitialGrid(_level.GetGridWidth(), _level.GetGridHeight(),
+                _level.GetWallCoordinates(), _level.GetBlankSpacesCoordinates());
             
 
             grid = PlacePacmanOnStartingPosition(grid, pacman.Coordinate);
@@ -44,15 +45,36 @@ namespace Pacman
             
             while(true)
             {
-                _gameState = PlayOneTick(_gameState);
+                _gameState = PlayOneLevel(_gameState, _level);
                 _output.DisplayGrid(_gameState);
-
-                
             }
         }
         public Grid PlacePacmanOnStartingPosition(Grid grid, Coordinate startingPosition)
         {
             return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, startingPosition);
+        }
+
+        public GameState PlayOneLevel(GameState gameState, ILevel level)
+        {
+            Grid grid = gameState.GetGrid();
+            
+            while (grid.GetDotsRemaining() > 0)
+            {
+                gameState = PlayOneTick(gameState);
+                grid = gameState.GetGrid();
+                _output.DisplayGrid(_gameState);
+            }
+            
+            if (grid.GetDotsRemaining() == 0)
+            {
+                _currentLevel++;
+                grid = _gridBuilder.GenerateInitialGrid(level.GetGridWidth(), level.GetGridHeight(),
+                    level.GetWallCoordinates(), level.GetBlankSpacesCoordinates());
+                grid = PlacePacmanOnStartingPosition(grid, level.GetPacmanStartingPosition());
+                _characterList[0].Coordinate = level.GetPacmanStartingPosition();
+            }
+            
+            return new GameState(grid, _gameScore, _currentLevel, _characterList);
         }
 
         public GameState PlayOneTick(GameState gameState)
@@ -63,10 +85,6 @@ namespace Pacman
             
             grid = MakeCharacterMove(grid, pacman);
             
-            if (grid.GetDotsRemaining() == 0)
-            {
-                _currentLevel++;
-            }
             return new GameState(grid, _gameScore, _currentLevel, _characterList);
         }
 
