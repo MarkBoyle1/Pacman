@@ -30,6 +30,10 @@ namespace Pacman.Output
                     {
                         Console.ForegroundColor = ConsoleColor.White;
                     }
+                    else if(point == DisplaySymbol.Monster)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;

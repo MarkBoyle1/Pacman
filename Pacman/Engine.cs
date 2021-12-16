@@ -29,19 +29,24 @@ namespace Pacman
 
         public void RunProgram()
         {
-            _level = new OriginalLayoutLevel();
+            _level = new TestLevel(1);
             Character pacman = new PacmanCharacter(_input, _output, _level.GetPacmanStartingPosition());
 
+            List<Character> monsterList = _level.GetMonsters();
+
             _characterList.Add(pacman);
+
+            foreach (var monster in monsterList)
+            {
+                _characterList.Add(monster);
+            }
             
             Grid grid = _gridBuilder.GenerateInitialGrid(_level.GetGridWidth(), _level.GetGridHeight(),
                 _level.GetWallCoordinates(), _level.GetBlankSpacesCoordinates());
             
-
-            grid = PlacePacmanOnStartingPosition(grid, pacman.Coordinate);
+            grid = PlaceCharactersOnGrid(grid, _characterList);
             _gameState = new GameState(grid, _gameScore, _currentLevel, _characterList);
             _output.DisplayGrid(_gameState);
-
             
             while(true)
             {
@@ -49,9 +54,15 @@ namespace Pacman
                 _output.DisplayGrid(_gameState);
             }
         }
-        public Grid PlacePacmanOnStartingPosition(Grid grid, Coordinate startingPosition)
+        
+        public Grid PlaceCharactersOnGrid(Grid grid, List<Character> characters)
         {
-            return _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, startingPosition);
+            foreach (var character in characters)
+            {
+                grid = _gridBuilder.UpdateGrid(grid, character.Symbol, character.Coordinate);
+            }
+
+            return grid;
         }
 
         public GameState PlayOneLevel(GameState gameState, ILevel level)
@@ -72,7 +83,7 @@ namespace Pacman
                 _currentLevel++;
                 grid = _gridBuilder.GenerateInitialGrid(level.GetGridWidth(), level.GetGridHeight(),
                     level.GetWallCoordinates(), level.GetBlankSpacesCoordinates());
-                grid = PlacePacmanOnStartingPosition(grid, level.GetPacmanStartingPosition());
+                grid = PlaceCharactersOnGrid(grid, _characterList);
                 _characterList[0].Coordinate = level.GetPacmanStartingPosition();
             }
             

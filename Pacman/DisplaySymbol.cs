@@ -12,5 +12,6 @@ namespace Pacman
         public const string PacmanHorizontalEating = "-";
         public const string PacmanVerticalEating = "|";
         public const string DefaultPacmanStartingSymbol = PacmanEastFacing;
+        public const string Monster = "\u15e3";
     }
 }

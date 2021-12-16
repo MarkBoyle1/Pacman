@@ -8,6 +8,8 @@ namespace Pacman
         private const int GridWidth = 19;
         private const int GridHeight = 21;
         private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
+        private int _numberOfMonsters = 0;
+        private List<Character> _monsterList = new List<Character>();
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -256,6 +258,27 @@ namespace Pacman
         public Coordinate GetPacmanStartingPosition()
         {
             return PacmanStartingPosition;
+        }
+
+        public List<Character> GetMonsters()
+        {
+            return _monsterList;
+        }
+
+        private List<Character> CreateMonsters()
+        {
+            List<Character> monsterList = new List<Character>();
+
+            for (int i = 0; i < _numberOfMonsters; i++)
+            {
+                Coordinate coordinate = new Coordinate(0, 1);
+
+                Character newMonster = new Monster(coordinate);
+                
+                monsterList.Add(newMonster);
+            }
+
+            return monsterList;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Pacman
         public List<Coordinate> GetWallCoordinates();
         public List<Coordinate> GetBlankSpacesCoordinates();
         public Coordinate GetPacmanStartingPosition();
+        public List<Character> GetMonsters();
     }
 }
