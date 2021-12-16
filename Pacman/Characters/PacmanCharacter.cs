@@ -23,9 +23,9 @@ namespace Pacman
         {
             string input = GetValidInput();
 
-            Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input);
+            Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input, grid.GetWidth(), grid.GetHeight());
             
-            List<Coordinate> possibleMoves = grid.GetPossibleMoves(Coordinate);
+            List<Coordinate> possibleMoves = GetPossibleMoves(Coordinate, grid);
 
             while (true)
             {
@@ -43,7 +43,7 @@ namespace Pacman
                 _output.DisplayMessage(OutputMessages.InvalidMove);
                 input = GetValidInput();
                 
-                coordinate = ConvertDirectionInputIntoCoordinate(input);
+                coordinate = ConvertDirectionInputIntoCoordinate(input, grid.GetWidth(), grid.GetHeight());
             }
         }
 

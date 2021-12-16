@@ -1,14 +1,15 @@
-using System.Collections.Generic;
 
 namespace Pacman
 {
     public class Grid
     {
         public string[][] Surface;
+        private int _dotsRemaining;
 
-        public Grid(string[][] surface)
+        public Grid(string[][] surface, int dotsRemaining)
         {
             Surface = surface;
+            _dotsRemaining = dotsRemaining;
         }
 
         public string GetPoint(Coordinate coordinate)
@@ -26,27 +27,10 @@ namespace Pacman
             return Surface.Length;
         }
 
-        public List<Coordinate> GetPossibleMoves(Coordinate coordinate)
+        public int GetDotsRemaining()
         {
-            List<Coordinate> possibleMoves = new List<Coordinate>();
-
-            List<Coordinate> surroundingSpaces = new List<Coordinate>()
-            {
-                new Coordinate(coordinate.GetRow() + 1, coordinate.GetColumn()),
-                new Coordinate(coordinate.GetRow() - 1, coordinate.GetColumn()),
-                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() + 1),
-                new Coordinate(coordinate.GetRow(), coordinate.GetColumn() - 1),
-            };
-
-            foreach (var space in surroundingSpaces)
-            {
-                if (GetPoint(space) != DisplaySymbol.Wall)
-                {
-                    possibleMoves.Add(space);
-                }
-            }
-
-            return possibleMoves;
+            return _dotsRemaining;
         }
+        
     }
 }
