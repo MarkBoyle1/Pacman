@@ -17,6 +17,19 @@ namespace Pacman
         public override Coordinate GetMove(Grid grid)
         {
             List<Coordinate> possibleMoves = GetPossibleMoves(Coordinate, grid);
+            
+            for (int i = possibleMoves.Count - 1; i >= 0; i--)
+            {
+                if (grid.GetPoint(possibleMoves[i]) == DisplaySymbol.Monster)
+                {
+                    possibleMoves.RemoveAt(i);
+                }
+            }
+
+            if (possibleMoves.Count == 0)
+            {
+                return Coordinate;
+            }
 
             int randomIndex = _random.Next(0, possibleMoves.Count);
 

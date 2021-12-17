@@ -9,7 +9,7 @@ namespace Pacman
         private const int GridWidth = 19;
         private const int GridHeight = 21;
         private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
-        private int _numberOfMonsters = 1;
+        private int _numberOfMonsters = 15;
         private List<Character> _monsterList = new List<Character>();
         private Random _random = new Random();
 
@@ -308,8 +308,8 @@ namespace Pacman
 
         private Coordinate GetRandomCoordinate()
         {
-            int randomRow = _random.Next(0, GridWidth);
-            int randomColumn = _random.Next(0, GridHeight);
+            int randomRow = _random.Next(0, GridHeight);
+            int randomColumn = _random.Next(0, GridWidth);
 
             return new Coordinate(randomRow, randomColumn);
         }

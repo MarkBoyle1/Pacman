@@ -34,7 +34,7 @@ namespace Pacman
 
             List<Character> monsterList = _level.GetMonsters();
 
-            _characterList.Add(pacman);
+            // _characterList.Add(pacman);
 
             foreach (var monster in monsterList)
             {

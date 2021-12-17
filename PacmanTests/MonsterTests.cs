@@ -105,5 +105,47 @@ namespace PacmanTests
             
             Assert.Equal(DisplaySymbol.BlankSpace, gameState.GetGrid().GetPoint(new Coordinate(0,0)));
         }
+
+        [Fact]
+        public void MonstersDontBumpIntoEachOther()
+        {
+            Grid grid = _gridBuilder.GenerateInitialGrid
+            (3,
+                3, 
+                new List<Coordinate>(){new Coordinate(0,1), new Coordinate(2,1)},
+                new List<Coordinate>()
+            );
+            Character monster1 = new Monster(new Coordinate(1, 1), false);
+            Character monster2 = new Monster(new Coordinate(1, 0), false);
+            List<Character> characterList = new List<Character>() {monster1, monster2};
+            grid = _engine.PlaceCharactersOnGrid(grid, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, monster1);
+            
+            Assert.Equal(1, monster1.Coordinate.GetRow());
+            Assert.Equal(2, monster1.Coordinate.GetColumn());
+        }
+        
+        [Fact]
+        public void given_NoPossibleMoves_when_MakeCharacterMove_then_return_currentCoordinate()
+        {
+            Grid grid = _gridBuilder.GenerateInitialGrid
+            (3,
+                3, 
+                new List<Coordinate>(){new Coordinate(0,1), new Coordinate(2,1), new Coordinate(1,2)},
+                new List<Coordinate>()
+            );
+            Character monster1 = new Monster(new Coordinate(1, 1), false);
+            Character monster2 = new Monster(new Coordinate(1, 0), false);
+            List<Character> characterList = new List<Character>() {monster1, monster2};
+            grid = _engine.PlaceCharactersOnGrid(grid, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, monster1);
+            
+            Assert.Equal(1, monster1.Coordinate.GetRow());
+            Assert.Equal(1, monster1.Coordinate.GetColumn());
+        }
     }
 }
