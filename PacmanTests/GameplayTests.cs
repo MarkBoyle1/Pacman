@@ -88,7 +88,7 @@ namespace PacmanTests
         public void given_PacmanEatsTheLastDot_when_PlayOneLevel_then_LevelIncreasesByOne()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
-            ILevel level = new TestLevel(0);
+            ILevel level = new TestLevel(0, new Coordinate(0,0), new List<Coordinate>());
 
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
@@ -106,10 +106,10 @@ namespace PacmanTests
         public void given_PacmanEatsTheLastDot_when_PlayOneLevel_then_LayoutIsReset()
         {
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
-            ILevel level = new TestLevel(0);
+            ILevel level = new TestLevel(0, new Coordinate(0,0), new List<Coordinate>());
             
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), level.GetPacmanStartingPosition());
+            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
             List<Character> characterList = new List<Character>() {pacman};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
 
@@ -120,6 +120,23 @@ namespace PacmanTests
             Assert.Equal(1, gameState.GetGrid().GetDotsRemaining());
             Assert.Equal(0, pacman.GetCoordinate().GetRow());
             Assert.Equal(0, pacman.GetCoordinate().GetColumn());
+        }
+
+        [Fact]
+        public void when_PlayOneTick_then_AllCharactersMove()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(5, 5);
+            IUserInput input = new TestInput(new List<string>() {Constants.North});
+            Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(1, 1));
+            Character monster = new Monster(new Coordinate(3,3), true);
+            List<Character> characters = new List<Character>() {pacman, monster};
+
+            GameState gameState = new GameState(grid, 0, 1, characters);
+
+            gameState = _engine.PlayOneTick(gameState);
+            
+            Assert.Equal(DisplaySymbol.BlankSpace, gameState.GetGrid().GetPoint(new Coordinate(1,1)));
+            Assert.Equal(DisplaySymbol.Dot, gameState.GetGrid().GetPoint(new Coordinate(3,3)));
         }
     }
 }

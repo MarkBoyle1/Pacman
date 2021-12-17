@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -8,8 +9,9 @@ namespace Pacman
         private const int GridWidth = 19;
         private const int GridHeight = 21;
         private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
-        private int _numberOfMonsters = 0;
+        private int _numberOfMonsters = 1;
         private List<Character> _monsterList = new List<Character>();
+        private Random _random = new Random();
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -262,7 +264,7 @@ namespace Pacman
 
         public List<Character> GetMonsters()
         {
-            return _monsterList;
+            return CreateMonsters();
         }
 
         private List<Character> CreateMonsters()
@@ -271,14 +273,59 @@ namespace Pacman
 
             for (int i = 0; i < _numberOfMonsters; i++)
             {
-                Coordinate coordinate = new Coordinate(0, 1);
+                Coordinate coordinate = new Coordinate(0,0);
+                bool coordinateIsFreeSpace = false;
 
-                Character newMonster = new Monster(coordinate);
+                while (!coordinateIsFreeSpace)
+                {
+                    coordinate = GetRandomCoordinate();
+                    coordinateIsFreeSpace = CoordinateIsFreeSpace(coordinate);
+                }
+
+                bool monsterIsOnADot = IsMonsterOnADot(coordinate);
+
+                Character newMonster = new Monster(coordinate, monsterIsOnADot);
                 
                 monsterList.Add(newMonster);
             }
 
             return monsterList;
+        }
+
+        private bool IsMonsterOnADot(Coordinate monsterPosition)
+        {
+            foreach (var coordinate in blankSpacesCoordinates)
+            {
+                if (monsterPosition.GetRow() == coordinate.GetRow() &&
+                    monsterPosition.GetColumn() == coordinate.GetColumn())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private Coordinate GetRandomCoordinate()
+        {
+            int randomRow = _random.Next(0, GridWidth);
+            int randomColumn = _random.Next(0, GridHeight);
+
+            return new Coordinate(randomRow, randomColumn);
+        }
+
+        private bool CoordinateIsFreeSpace(Coordinate coordinate)
+        {
+            foreach (var wallCoordinate in wallCoordinates)
+            {
+                if (wallCoordinate.GetRow() == coordinate.GetRow() &&
+                    wallCoordinate.GetColumn() == coordinate.GetColumn())
+                {
+                    return false;
+                }
+            }
+
+            return coordinate.GetRow() != PacmanStartingPosition.GetRow() && coordinate.GetColumn() != PacmanStartingPosition.GetColumn();
         }
     }
 }

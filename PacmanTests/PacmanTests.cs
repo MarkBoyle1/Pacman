@@ -97,8 +97,9 @@ namespace PacmanTests
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
             List<Character> characterList = new List<Character>() {pacman};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
 
-            GameState gameState = _engine.MakeCharacterMove(grid, pacman);
+            gameState = _engine.MakeCharacterMove(gameState, pacman);
             
             Assert.Equal(DisplaySymbol.PacmanNorthFacing, gameState.GetGrid().GetPoint(new Coordinate(10,9)));
         }
@@ -113,7 +114,9 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = _engine.MakeCharacterMove(grid, pacman);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, pacman);
             
             Assert.Equal(DisplaySymbol.PacmanWestFacing, gameState.GetGrid().GetPoint(new Coordinate(11,8)));
         }
@@ -128,7 +131,9 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = _engine.MakeCharacterMove(grid, pacman);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, pacman);
             
             Assert.Equal(DisplaySymbol.BlankSpace, gameState.GetGrid().GetPoint(new Coordinate(11,9)));
         }
@@ -148,7 +153,9 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = _engine.MakeCharacterMove(grid, pacman);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, pacman);
             
             Assert.Equal(1, pacman.GetCoordinate().GetRow());
             Assert.Equal(2, pacman.GetCoordinate().GetColumn());

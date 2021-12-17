@@ -14,7 +14,7 @@ namespace PacmanTests
         [Fact]
         public void given_levelHasOneMonster_when_GetMonsters_then_returns_ListOfOneMonster()
         {
-            ILevel level = new TestLevel(1);
+            ILevel level = new TestLevel(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(1,1)});
 
             List<Character> monsterList = level.GetMonsters();
             
@@ -24,7 +24,7 @@ namespace PacmanTests
         [Fact]
         public void given_levelHasOneMonsterAtZeroOne_when_PlaceCharactersOnGrid_then_ZeroOneEqualsMonster()
         {
-            ILevel level = new TestLevel(1);
+            ILevel level = new TestLevel(1,new Coordinate(0,0), new List<Coordinate>(){new Coordinate(0,1)});
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
 
             List<Character> monsterList = level.GetMonsters();
@@ -32,6 +32,78 @@ namespace PacmanTests
             grid = _engine.PlaceCharactersOnGrid(grid, monsterList);
             
             Assert.Equal(DisplaySymbol.Monster, grid.GetPoint(new Coordinate(0,1)));
+        }
+
+        [Fact]
+        public void given_OnlyPossibleMoveEqualsOneTwo_when_GetMove_then_returns_OneTwo()
+        {
+            Grid grid = _gridBuilder.GenerateInitialGrid
+            (3,
+                3, 
+                new List<Coordinate>(){new Coordinate(1,0), new Coordinate(2,1), new Coordinate(0,1)},
+                new List<Coordinate>()
+            );
+
+            Character monster = new Monster(new Coordinate(1,1), true);
+
+            Coordinate coordinate = monster.GetMove(grid);
+            
+            Assert.Equal(1, coordinate.GetRow());
+            Assert.Equal(2, coordinate.GetColumn());
+        }
+        
+        [Fact]
+        public void given_MonsterNeedsToWrapAroundGrid__when_GetMove_then_MonsterWrapsAroundGrid()
+        {
+            Grid grid = _gridBuilder.GenerateInitialGrid
+            (3,
+                3, 
+                new List<Coordinate>(){new Coordinate(0,1), new Coordinate(0,2), new Coordinate(1,0)},
+                new List<Coordinate>()
+            );
+            Character monster = new Monster(new Coordinate(0, 0), true);
+            
+            Coordinate move = monster.GetMove(grid);
+            
+            Assert.Equal(2, move.GetRow());            
+            Assert.Equal(0, move.GetColumn());
+        }
+        
+        [Fact]
+        public void given_MonsterIsCurrentlyOverADot__when_MakeCharacterMove_then_DotRemainsThereAfterMonsterHasLeft()
+        {
+            Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
+            Character monster = new Monster(new Coordinate(0, 0), true);
+            
+            List<Character> characterList = new List<Character>() {monster};
+
+            grid = _engine.PlaceCharactersOnGrid(grid, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, monster);
+            
+            Assert.Equal(DisplaySymbol.Dot, gameState.GetGrid().GetPoint(new Coordinate(0,0)));
+        }
+        
+        [Fact]
+        public void given_MonsterIsNotCurrentlyOverADot__when_MakeCharacterMove_then_BlankSpaceRemainsThereAfterMonsterHasLeft()
+        {
+            Grid grid = _gridBuilder.GenerateInitialGrid
+            (3,
+                3, 
+                new List<Coordinate>(),
+                new List<Coordinate>(){new Coordinate(0,0)}
+            );
+            Character monster = new Monster(new Coordinate(0, 0), false);
+            
+            List<Character> characterList = new List<Character>() {monster};
+
+            grid = _engine.PlaceCharactersOnGrid(grid, characterList);
+            GameState gameState = new GameState(grid, 0, 1, characterList);
+
+            gameState = _engine.MakeCharacterMove(gameState, monster);
+            
+            Assert.Equal(DisplaySymbol.BlankSpace, gameState.GetGrid().GetPoint(new Coordinate(0,0)));
         }
     }
 }
