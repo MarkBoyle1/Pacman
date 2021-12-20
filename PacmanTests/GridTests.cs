@@ -55,7 +55,7 @@ namespace PacmanTests
         [Fact]
         public void given_OriginalLayoutLevelContainsWallAtTwoTwo_when_GenerateInitialGrid_then_TwoTwoContainsWall()
         {
-            Level level = new Level(new OriginalLayout());
+            Level level = new Level(1, new OriginalLayout());
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (

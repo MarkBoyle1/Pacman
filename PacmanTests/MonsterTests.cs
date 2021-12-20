@@ -13,7 +13,7 @@ namespace PacmanTests
         [Fact]
         public void given_levelHasOneMonster_when_GetMonsters_then_returns_ListOfOneMonster()
         {
-            Level level = new Level(new TestLayout(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(1,1)}));
+            Level level = new Level(1, new TestLayout(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(1,1)}));
 
             List<Character> monsterList = level.GetMonsters();
             

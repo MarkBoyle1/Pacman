@@ -12,11 +12,11 @@ namespace Pacman
         private Coordinate _pacmanStartingLocation;
         private List<Character> _monsterList;
 
-        public Level(ILayout layout)
+        public Level(int levelNumber, ILayout layout)
         {
             _layout = layout;
-            _numberOfMonsters = layout.GetStartingNumberOfMonsters();
-            _levelNumber = 1;
+            _levelNumber = levelNumber;
+            _numberOfMonsters = layout.GetStartingNumberOfMonsters() + (2 * (levelNumber - 1));
             _pacmanStartingLocation = _layout.GetPacmanStartingPosition();
             _monsterList = CreateMonsters();
         }

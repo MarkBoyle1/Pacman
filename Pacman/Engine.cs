@@ -26,7 +26,7 @@ namespace Pacman
             _currentLevel = 1;
             _livesLeft = 3;
             _characterList = new List<Character>();
-            _level = new Level(layout);
+            _level = new Level(1, layout);
         }
 
         public void RunProgram()

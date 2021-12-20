@@ -97,7 +97,7 @@ namespace PacmanTests
             Engine _engine = new Engine(new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
-            Level level = new Level(new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
+            Level level = new Level(1, new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
 
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
@@ -116,7 +116,7 @@ namespace PacmanTests
         {
             Engine _engine = new Engine(new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
-            Level level = new Level(new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
+            Level level = new Level(1, new TestLayout(0, new Coordinate(0,0), new List<Coordinate>()));
             
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(0,0));
@@ -156,7 +156,7 @@ namespace PacmanTests
         {
             Engine _engine = new Engine(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
 
-            Level level = new Level(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
+            Level level = new Level(1, new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             Character pacman = new PacmanCharacter(new UserInput(), new ConsoleOutput(), new Coordinate(1, 1));
@@ -174,7 +174,7 @@ namespace PacmanTests
         {
             Engine _engine = new Engine(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
 
-            Level level = new Level(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
+            Level level = new Level(1, new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
             
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             IUserInput input = new TestInput(new List<string>() {Constants.North});
