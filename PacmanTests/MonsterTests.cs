@@ -8,13 +8,12 @@ namespace PacmanTests
 {
     public class MonsterTests
     {
-        private Engine _engine = new Engine();
         private GridBuilder _gridBuilder = new GridBuilder();
         
         [Fact]
         public void given_levelHasOneMonster_when_GetMonsters_then_returns_ListOfOneMonster()
         {
-            ILevel level = new TestLevel(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(1,1)});
+            Level level = new Level(new TestLayout(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(1,1)}));
 
             List<Character> monsterList = level.GetMonsters();
             
@@ -24,11 +23,13 @@ namespace PacmanTests
         [Fact]
         public void given_levelHasOneMonsterAtZeroOne_when_PlaceCharactersOnGrid_then_ZeroOneEqualsMonster()
         {
-            ILevel level = new TestLevel(1,new Coordinate(0,0), new List<Coordinate>(){new Coordinate(0,1)});
+            Engine _engine = new Engine(new TestLayout(1, new Coordinate(1,1), new List<Coordinate>(){new Coordinate(0,1)}));
+           
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
-
-            List<Character> monsterList = level.GetMonsters();
-
+            Character monster = new Monster(new Coordinate(0, 1), true);
+        
+            List<Character> monsterList = new List<Character>(){monster};
+        
             grid = _engine.PlaceCharactersOnGrid(grid, monsterList);
             
             Assert.Equal(DisplaySymbol.Monster, grid.GetPoint(new Coordinate(0,1)));
@@ -72,13 +73,15 @@ namespace PacmanTests
         [Fact]
         public void given_MonsterIsCurrentlyOverADot__when_MakeCharacterMove_then_DotRemainsThereAfterMonsterHasLeft()
         {
+            Engine _engine = new Engine(new TestLayout(1, new Coordinate(1,1), new List<Coordinate>(){new Coordinate(0,0)}));
+
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             Character monster = new Monster(new Coordinate(0, 0), true);
             
             List<Character> characterList = new List<Character>() {monster};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, monster);
             
@@ -88,6 +91,8 @@ namespace PacmanTests
         [Fact]
         public void given_MonsterIsNotCurrentlyOverADot__when_MakeCharacterMove_then_BlankSpaceRemainsThereAfterMonsterHasLeft()
         {
+            Engine _engine = new Engine(new TestLayout(1, new Coordinate(1,1), new List<Coordinate>(){new Coordinate(0,0)}));
+
             Grid grid = _gridBuilder.GenerateInitialGrid
             (3,
                 3, 
@@ -99,7 +104,7 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {monster};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, monster);
             
@@ -109,6 +114,8 @@ namespace PacmanTests
         [Fact]
         public void MonstersDontBumpIntoEachOther()
         {
+            Engine _engine = new Engine(new TestLayout(1, new Coordinate(1,1), new List<Coordinate>()));
+
             Grid grid = _gridBuilder.GenerateInitialGrid
             (3,
                 3, 
@@ -119,7 +126,7 @@ namespace PacmanTests
             Character monster2 = new Monster(new Coordinate(1, 0), false);
             List<Character> characterList = new List<Character>() {monster1, monster2};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, monster1);
             
@@ -130,6 +137,8 @@ namespace PacmanTests
         [Fact]
         public void given_NoPossibleMoves_when_MakeCharacterMove_then_return_currentCoordinate()
         {
+            Engine _engine = new Engine(new TestLayout(2, new Coordinate(1,1), new List<Coordinate>(){new Coordinate(1,1), new Coordinate(1,0)}));
+
             Grid grid = _gridBuilder.GenerateInitialGrid
             (3,
                 3, 
@@ -140,7 +149,7 @@ namespace PacmanTests
             Character monster2 = new Monster(new Coordinate(1, 0), false);
             List<Character> characterList = new List<Character>() {monster1, monster2};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, monster1);
             

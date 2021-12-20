@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Pacman
 {
-    public interface ILevel
+    public interface ILayout
     {
         public int GetGridWidth();
         public int GetGridHeight();
         public List<Coordinate> GetWallCoordinates();
         public List<Coordinate> GetBlankSpacesCoordinates();
         public Coordinate GetPacmanStartingPosition();
-        public List<Character> GetMonsters();
+        public int GetStartingNumberOfMonsters();
     }
 }

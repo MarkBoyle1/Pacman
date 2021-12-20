@@ -9,29 +9,29 @@ namespace PacmanTests
     public class PacmanTests
     {
         private GridBuilder _gridBuilder;
-        private Engine _engine;
+        // private Engine _engine;
         private Grid _defaultGrid;
 
         public PacmanTests()
         {
             _gridBuilder = new GridBuilder();
-            _engine = new Engine();
+            // _engine = new Engine();
             _defaultGrid = _gridBuilder.GenerateEmptyGrid(19, 21);
         }
         
         [Fact]
         public void given_StartingLocationEqualsNineEleven_when_PlacePacmanOnStartingLocation_then_NineElevenEqualsPacman()
         {
-            ILevel level = new OriginalLayoutLevel();
-            
-            Grid grid = _gridBuilder.GenerateEmptyGrid(level.GetGridWidth(), level.GetGridHeight());
-            Character pacman =
-                new PacmanCharacter(new UserInput(), new ConsoleOutput(), level.GetPacmanStartingPosition());
-            List<Character> characterList = new List<Character>() {pacman};
+            Engine _engine = new Engine(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
 
+            Grid grid = _gridBuilder.GenerateEmptyGrid(3,3);
+            Character pacman =
+                new PacmanCharacter(new UserInput(), new ConsoleOutput(), new Coordinate(1,1));
+            List<Character> characterList = new List<Character>() {pacman};
+        
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
             
-            Assert.Equal(DisplaySymbol.DefaultPacmanStartingSymbol, grid.GetPoint(level.GetPacmanStartingPosition()));
+            Assert.Equal(DisplaySymbol.DefaultPacmanStartingSymbol, grid.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
@@ -92,12 +92,14 @@ namespace PacmanTests
         [Fact]
         public void given_InputEqualsNorth_when_MakeCharacterMove_then_GameStateGridIsUpdated()
         {
+            Engine _engine = new Engine(new TestLayout(0, new Coordinate(11,9), new List<Coordinate>()));
+
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
             IUserInput input = new TestInput(new List<string>{Constants.North});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
             List<Character> characterList = new List<Character>() {pacman};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, pacman);
             
@@ -107,6 +109,8 @@ namespace PacmanTests
         [Fact]
         public void given_InputEqualsWest_when_MakeCharacterMove_then_GameStateGridIsUpdated()
         {
+            Engine _engine = new Engine(new TestLayout(0, new Coordinate(11,9), new List<Coordinate>()));
+
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
             IUserInput input = new TestInput(new List<string>{Constants.West});
@@ -114,7 +118,7 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, pacman);
             
@@ -124,6 +128,8 @@ namespace PacmanTests
         [Fact]
         public void given_PacmanIsInPositionNineEleven_when_MakeCharacterMove_then_NineElevenEqualsBlankSpace()
         {
+            Engine _engine = new Engine(new TestLayout(0, new Coordinate(11,9), new List<Coordinate>()));
+
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
             IUserInput input = new TestInput(new List<string>{Constants.West});
@@ -131,7 +137,7 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, pacman);
             
@@ -141,6 +147,8 @@ namespace PacmanTests
         [Fact]
         public void given_OnlyPossibleMoveIsOneTwo_when_MakeCharacterMove_then_CoordinateOfPacmanEqualsOneTwo()
         {
+            Engine _engine = new Engine(new TestLayout(0, new Coordinate(1,1), new List<Coordinate>()));
+
             Grid grid = _gridBuilder.GenerateInitialGrid
             (3,
                 3, 
@@ -153,7 +161,7 @@ namespace PacmanTests
             List<Character> characterList = new List<Character>() {pacman};
 
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
-            GameState gameState = new GameState(grid, 0, 1, characterList);
+            GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = _engine.MakeCharacterMove(gameState, pacman);
             

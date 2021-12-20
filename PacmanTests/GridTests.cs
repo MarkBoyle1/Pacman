@@ -55,14 +55,14 @@ namespace PacmanTests
         [Fact]
         public void given_OriginalLayoutLevelContainsWallAtTwoTwo_when_GenerateInitialGrid_then_TwoTwoContainsWall()
         {
-            ILevel level = new OriginalLayoutLevel();
+            Level level = new Level(new OriginalLayout());
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (
-                level.GetGridWidth(),
-                level.GetGridHeight(),
-                level.GetWallCoordinates(), 
-                level.GetBlankSpacesCoordinates()
+                level.GetLayout().GetGridWidth(),
+                level.GetLayout().GetGridHeight(),
+                level.GetLayout().GetWallCoordinates(), 
+                level.GetLayout().GetBlankSpacesCoordinates()
             );
 
             Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2,2)));

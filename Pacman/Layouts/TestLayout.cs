@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Pacman
 {
-    public class TestLevel : ILevel
+    public class TestLayout : ILayout
     {
         private const int GridWidth = 2;
         private const int GridHeight = 1;
@@ -12,7 +12,7 @@ namespace Pacman
         private int _numberOfMonsters;
         private List<Character> _monsterList;
 
-        public TestLevel(int numberOfMonsters, Coordinate pacmanStartingPosition, List<Coordinate> monsterCoordinates)
+        public TestLayout(int numberOfMonsters, Coordinate pacmanStartingPosition, List<Coordinate> monsterCoordinates)
         {
             _numberOfMonsters = numberOfMonsters;
             _pacmanStartingPosition = pacmanStartingPosition;
@@ -42,6 +42,11 @@ namespace Pacman
         public Coordinate GetPacmanStartingPosition()
         {
             return _pacmanStartingPosition;
+        }
+
+        public int GetStartingNumberOfMonsters()
+        {
+            return _numberOfMonsters;
         }
 
         public List<Character> GetMonsters()
