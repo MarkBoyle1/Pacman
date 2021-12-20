@@ -14,7 +14,6 @@ namespace Pacman
         private int _gameScore;
         private int _livesLeft;
         private List<Character> _characterList;
-        // private GameState _gameState;
         private int _currentLevel;
         private Level _level;
 
@@ -54,6 +53,11 @@ namespace Pacman
             {
                 gameState = PlayOneLevel(gameState, _level);
                 _output.DisplayGrid(gameState);
+
+                if (gameState.GetLivesLeft() == 0)
+                {
+                    break;
+                }
             }
         }
         
@@ -71,7 +75,7 @@ namespace Pacman
         {
             Grid grid = gameState.GetGrid();
             
-            while (grid.GetDotsRemaining() > 0)
+            while (grid.GetDotsRemaining() > 0 && gameState.GetLivesLeft() > 0)
             {
                 gameState = PlayOneTick(gameState);
                 grid = gameState.GetGrid();
@@ -81,13 +85,13 @@ namespace Pacman
             if (grid.GetDotsRemaining() == 0)
             {
                 _currentLevel++;
+                gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
                 grid = _gridBuilder.GenerateInitialGrid(level.GetLayout().GetGridWidth(), level.GetLayout().GetGridHeight(),
                     level.GetLayout().GetWallCoordinates(), level.GetLayout().GetBlankSpacesCoordinates());
                 grid = PlaceCharactersOnGrid(grid, gameState.GetCharacterList());
-                gameState.GetCharacterList()[0].Coordinate = level.GetPacmanStartingPosition();
             }
             
-            return new GameState(grid, _gameScore, _currentLevel, _livesLeft, _characterList);
+            return new GameState(grid, gameState.GetScore(), _currentLevel, gameState.GetLivesLeft(), _characterList);
         }
 
         public GameState PlayOneTick(GameState gameState)
@@ -99,7 +103,9 @@ namespace Pacman
 
                 if (pacmanIsDead)
                 {
-                    return PacmanDies(gameState, _level);
+                    _output.DisplayDeathAnimation(gameState);
+                    gameState = PacmanDies(gameState, _level);
+                    return gameState;
                 }
             }
             _output.DisplayGrid(gameState);
@@ -162,6 +168,7 @@ namespace Pacman
         public GameState PacmanDies(GameState gameState, Level level)
         {
             int livesLeft = gameState.GetLivesLeft() - 1;
+            gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
             Grid grid = _gridBuilder.UpdateGrid(gameState.GetGrid(), DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
 
             return new GameState(grid, gameState.GetScore(), gameState.GetLevel(),

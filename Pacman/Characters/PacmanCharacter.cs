@@ -10,7 +10,7 @@ namespace Pacman
     {
         private IUserInput _input;
         private IOutput _output;
-        private Coordinate _startingLocation;
+        
         public PacmanCharacter(IUserInput input, IOutput output, Coordinate startingPosition)
             : base()
         {
@@ -84,11 +84,6 @@ namespace Pacman
             }
 
             return input;
-        }
-
-        public Coordinate GetStartingLocation()
-        {
-            return _startingLocation;
         }
     }
 }

@@ -196,8 +196,6 @@ namespace PacmanTests
         {
             Engine _engine = new Engine(new TestLayout(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(0,1)}));
 
-            Level level = new Level(new TestLayout(1, new Coordinate(0,0), new List<Coordinate>(){new Coordinate(0,1)}));
-            
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
             IUserInput input = new TestInput(new List<string>() {Constants.North});
         
