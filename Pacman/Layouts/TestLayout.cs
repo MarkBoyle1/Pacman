@@ -4,39 +4,43 @@ namespace Pacman
 {
     public class TestLayout : ILayout
     {
-        private const int GridWidth = 2;
-        private const int GridHeight = 1;
+        private int _gridWidth;
+        private int _gridHeight;
         private Coordinate _pacmanStartingPosition;
-        private List<Coordinate> wallCoordinates = new List<Coordinate>();
-        private List<Coordinate> blankSpacesCoordinates = new List<Coordinate>();
+        private List<Coordinate> _wallCoordinates;
+        private List<Coordinate> _blankSpacesCoordinates;
         private int _numberOfMonsters;
         private List<Character> _monsterList;
 
-        public TestLayout(int numberOfMonsters, Coordinate pacmanStartingPosition, List<Coordinate> monsterCoordinates)
+        public TestLayout(Coordinate pacmanStartingPosition, List<Coordinate> monsterCoordinates, List<Coordinate> wallCoordinates, List<Coordinate> blankSpaces, int width = 3, int height = 3, int numberOfMonsters = 0)
         {
             _numberOfMonsters = numberOfMonsters;
             _pacmanStartingPosition = pacmanStartingPosition;
             _monsterList = CreateMonsterList(monsterCoordinates);
+            _wallCoordinates = wallCoordinates;
+            _blankSpacesCoordinates = blankSpaces;
+            _gridWidth = width;
+            _gridHeight = height;
         }
         
         public int GetGridWidth()
         {
-            return GridWidth;
+            return _gridWidth;
         }
         
         public int GetGridHeight()
         {
-            return GridHeight;
+            return _gridHeight;
         }
 
         public List<Coordinate> GetWallCoordinates()
         {
-            return wallCoordinates;
+            return _wallCoordinates;
         }
         
         public List<Coordinate> GetBlankSpacesCoordinates()
         {
-            return blankSpacesCoordinates;
+            return _blankSpacesCoordinates;
         }
 
         public Coordinate GetPacmanStartingPosition()

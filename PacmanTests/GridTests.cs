@@ -40,13 +40,14 @@ namespace PacmanTests
         [Fact]
         public void given_BlankSpacesCoordinatesListContainsOneOne_when_GenerateInitialGrid_then_OneOneContainsBlankSpace()
         {
-            Grid grid = _gridBuilder.GenerateInitialGrid
-                (
-                    19, 
-                    21,
-                    new List<Coordinate>(){new Coordinate(2,2)}, 
-                    new List<Coordinate>(){new Coordinate(1,1)}
-                );
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(1, 1), 
+                new List<Coordinate>(),
+                new List<Coordinate>(){new Coordinate(2,2)}, 
+                new List<Coordinate>(){new Coordinate(1,1)}
+            );
+            Grid grid = _gridBuilder.GenerateInitialGrid(layout);
 
             Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2, 2)));
             Assert.Equal(DisplaySymbol.BlankSpace, grid.GetPoint(new Coordinate(1,1)));
@@ -55,14 +56,12 @@ namespace PacmanTests
         [Fact]
         public void given_OriginalLayoutLevelContainsWallAtTwoTwo_when_GenerateInitialGrid_then_TwoTwoContainsWall()
         {
-            Level level = new Level(1, new OriginalLayout());
+            ILayout layout = new OriginalLayout();
+            Level level = new Level(1, layout);
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (
-                level.GetLayout().GetGridWidth(),
-                level.GetLayout().GetGridHeight(),
-                level.GetLayout().GetWallCoordinates(), 
-                level.GetLayout().GetBlankSpacesCoordinates()
+                layout
             );
 
             Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2,2)));

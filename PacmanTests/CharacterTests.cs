@@ -13,11 +13,11 @@ namespace PacmanTests
         [Fact]
         public void given_CoordinateEqualsOneOne_and_WallsOnEachSideExceptOneTwo_when_GetPossibleMoves_then_return_ListWithOneTwo()
         {
+            ILayout layout = new TestLayout(new Coordinate(1, 1), new List<Coordinate>(),
+                new List<Coordinate>() {new Coordinate(1, 0), new Coordinate(2, 1), new Coordinate(0, 1)},
+                new List<Coordinate>());
             Grid grid = _gridBuilder.GenerateInitialGrid
-            (3,
-                3, 
-                new List<Coordinate>(){new Coordinate(1,0), new Coordinate(2,1), new Coordinate(0,1)},
-                new List<Coordinate>()
+            (layout
             );
 
             Character character = new PacmanCharacter(new UserInput(), new ConsoleOutput(), new Coordinate(1, 1));
@@ -32,11 +32,11 @@ namespace PacmanTests
         [Fact]
         public void given_CoordinateEqualsOneOne_and_WallsOnTwoSides_when_GetPossibleMoves_then_return_ListWithTwoCoordinates()
         {
+            ILayout layout = new TestLayout(new Coordinate(1, 1), new List<Coordinate>(),
+                new List<Coordinate>() {new Coordinate(1, 0), new Coordinate(2, 1)}, new List<Coordinate>());
+
             Grid grid = _gridBuilder.GenerateInitialGrid
-            (3,
-                3, 
-                new List<Coordinate>(){new Coordinate(1,0), new Coordinate(2,1)},
-                new List<Coordinate>()
+            (layout
             );
 
             Character character = new PacmanCharacter(new UserInput(), new ConsoleOutput(), new Coordinate(1, 1));

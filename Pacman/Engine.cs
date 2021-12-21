@@ -16,6 +16,7 @@ namespace Pacman
         private List<Character> _characterList;
         private int _currentLevel;
         private Level _level;
+        private ILayout _layout;
 
         public Engine(ILayout layout)
         {
@@ -26,41 +27,46 @@ namespace Pacman
             _currentLevel = 1;
             _livesLeft = 3;
             _characterList = new List<Character>();
-            _level = new Level(1, layout);
+            _layout = layout;
+            _level = new Level(1, _layout);
         }
 
         public void RunProgram()
         {
             Character pacman = new PacmanCharacter(_input, _output, _level.GetPacmanStartingPosition());
 
-            List<Character> monsterList = _level.GetMonsters();
-
-            _characterList.Add(pacman);
-
-            foreach (var monster in monsterList)
-            {
-                _characterList.Add(monster);
-            }
+            _characterList = CreateCharacterList(pacman, _level);
             
-            Grid grid = _gridBuilder.GenerateInitialGrid(_level.GetLayout().GetGridWidth(), _level.GetLayout().GetGridHeight(),
-                _level.GetLayout().GetWallCoordinates(), _level.GetLayout().GetBlankSpacesCoordinates());
+            Grid grid = _gridBuilder.GenerateInitialGrid(_level.GetLayout());
             
             grid = PlaceCharactersOnGrid(grid, _characterList);
+            
             GameState gameState = new GameState(grid, _gameScore, _currentLevel, _livesLeft, _characterList);
+            
             _output.DisplayGrid(gameState);
             
-            while(true)
+            while(gameState.GetLivesLeft() > 0)
             {
                 gameState = PlayOneLevel(gameState, _level);
                 _output.DisplayGrid(gameState);
-
-                if (gameState.GetLivesLeft() == 0)
-                {
-                    break;
-                }
             }
         }
-        
+
+        public List<Character> CreateCharacterList(Character pacman, Level level)
+        {
+            List<Character> characters = new List<Character>();
+            characters.Add(pacman);
+
+            List<Character> monsters = level.GetMonsters();
+
+            foreach (var monster in monsters)
+            {
+                characters.Add(monster);
+            }
+
+            return characters;
+        }
+
         public Grid PlaceCharactersOnGrid(Grid grid, List<Character> characters)
         {
             foreach (var character in characters)
@@ -85,10 +91,16 @@ namespace Pacman
             if (grid.GetDotsRemaining() == 0)
             {
                 _currentLevel++;
+                _level = new Level(_currentLevel, _layout);
+
+                _characterList = CreateCharacterList(gameState.GetCharacterList().First(), _level);
+
                 gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
-                grid = _gridBuilder.GenerateInitialGrid(level.GetLayout().GetGridWidth(), level.GetLayout().GetGridHeight(),
-                    level.GetLayout().GetWallCoordinates(), level.GetLayout().GetBlankSpacesCoordinates());
-                grid = PlaceCharactersOnGrid(grid, gameState.GetCharacterList());
+                gameState.GetCharacterList().First().Symbol = DisplaySymbol.DefaultPacmanStartingSymbol;
+                
+                grid = _gridBuilder.GenerateInitialGrid(level.GetLayout());
+                
+                grid = PlaceCharactersOnGrid(grid, _characterList);
             }
             
             return new GameState(grid, gameState.GetScore(), _currentLevel, gameState.GetLivesLeft(), _characterList);
@@ -104,7 +116,7 @@ namespace Pacman
                 if (pacmanIsDead)
                 {
                     _output.DisplayDeathAnimation(gameState);
-                    gameState = PacmanDies(gameState, _level);
+                    gameState = UpdateGameStateForPacmanDeath(gameState, _level);
                     return gameState;
                 }
             }
@@ -165,7 +177,7 @@ namespace Pacman
             return gameState;
         }
 
-        public GameState PacmanDies(GameState gameState, Level level)
+        public GameState UpdateGameStateForPacmanDeath(GameState gameState, Level level)
         {
             int livesLeft = gameState.GetLivesLeft() - 1;
             gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
