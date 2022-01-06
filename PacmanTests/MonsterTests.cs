@@ -43,7 +43,8 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+
            
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             Character monster = new Monster(new Coordinate(0, 1), true);
@@ -111,7 +112,8 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             Character monster = new Monster(new Coordinate(0, 0), true);
@@ -139,7 +141,8 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
@@ -169,7 +172,8 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
@@ -199,7 +203,7 @@ namespace PacmanTests
                 3,
                 2
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
             );

@@ -11,6 +11,7 @@ namespace Pacman
         private Random _random = new Random();
         private Coordinate _pacmanStartingLocation;
         private List<Character> _monsterList;
+        private List<Coordinate> _spacesAlreadyTaken;
 
         public Level(int levelNumber, ILayout layout)
         {
@@ -18,9 +19,24 @@ namespace Pacman
             _levelNumber = levelNumber;
             _numberOfMonsters = layout.GetStartingNumberOfMonsters() + (2 * (levelNumber - 1));
             _pacmanStartingLocation = _layout.GetPacmanStartingPosition();
+            _spacesAlreadyTaken = CreateSpacesAlreadyTakenList();
             _monsterList = CreateMonsters();
         }
-        
+
+        public List<Coordinate> CreateSpacesAlreadyTakenList()
+        {
+            List<Coordinate> spacesAlreadyTaken = new List<Coordinate>();
+
+            foreach (var wallCoordinate in _layout.GetWallCoordinates())
+            {
+                spacesAlreadyTaken.Add(wallCoordinate);
+            }
+            
+            spacesAlreadyTaken.Add(_pacmanStartingLocation);
+
+            return spacesAlreadyTaken;
+        }
+
         public List<Character> GetMonsters()
         {
             return _monsterList;
@@ -44,12 +60,19 @@ namespace Pacman
             {
                 Coordinate coordinate = new Coordinate(0,0);
                 bool coordinateIsFreeSpace = false;
+
+                if (_spacesAlreadyTaken.Count >= (_layout.GetGridWidth() * _layout.GetGridHeight()))
+                {
+                    break;
+                }
         
                 while (!coordinateIsFreeSpace)
                 {
                     coordinate = GetRandomCoordinate();
                     coordinateIsFreeSpace = CoordinateIsFreeSpace(coordinate);
                 }
+                
+                _spacesAlreadyTaken.Add(coordinate);
         
                 bool monsterIsOnADot = IsMonsterOnADot(coordinate);
         
@@ -85,16 +108,16 @@ namespace Pacman
         
         private bool CoordinateIsFreeSpace(Coordinate coordinate)
         {
-            foreach (var wallCoordinate in _layout.GetWallCoordinates())
+            foreach (var space in _spacesAlreadyTaken)
             {
-                if (wallCoordinate.GetRow() == coordinate.GetRow() &&
-                    wallCoordinate.GetColumn() == coordinate.GetColumn())
+                if (space.GetRow() == coordinate.GetRow() &&
+                    space.GetColumn() == coordinate.GetColumn())
                 {
                     return false;
                 }
             }
         
-            return coordinate.GetRow() != _layout.GetPacmanStartingPosition().GetRow() || coordinate.GetColumn() != _layout.GetPacmanStartingPosition().GetColumn();
+            return true;
         }
     }
 }

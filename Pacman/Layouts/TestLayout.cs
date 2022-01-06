@@ -23,6 +23,12 @@ namespace Pacman
             _gridHeight = height;
         }
         
+        public int GetStartingNumberOfDots()
+        {
+            int startingNumberOfDots = _gridHeight * _gridWidth  - _wallCoordinates.Count - _blankSpacesCoordinates.Count - 1;
+            return startingNumberOfDots;
+        }
+        
         public int GetGridWidth()
         {
             return _gridWidth;

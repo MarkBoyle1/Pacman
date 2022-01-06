@@ -10,5 +10,6 @@ namespace Pacman
         public List<Coordinate> GetBlankSpacesCoordinates();
         public Coordinate GetPacmanStartingPosition();
         public int GetStartingNumberOfMonsters();
+        public int GetStartingNumberOfDots();
     }
 }

@@ -14,7 +14,6 @@ namespace Pacman.Output
         {
             Grid grid = gameState.GetGrid();
             Console.Clear();
-            Console.Write("Dots Remaining: " + gameState.GetGrid().GetDotsRemaining());
             Console.Write(" Lives: " + gameState.GetLivesLeft());
             Console.Write(" Score: " + gameState.GetScore());
             Console.WriteLine(" Level: " + gameState.GetLevel());
@@ -58,8 +57,8 @@ namespace Pacman.Output
             for (int i = 0; i < 10; i++)
             {
                 Console.Clear();
-                Console.Write("Dots Remaining: " + gameState.GetGrid().GetDotsRemaining());
                 Console.Write(" Lives: " + gameState.GetLivesLeft());
+                Console.Write(" Score: " + gameState.GetScore());
                 Console.WriteLine(" Level: " + gameState.GetLevel());
 
                 for (int row = 0; row < grid.GetHeight(); row++)

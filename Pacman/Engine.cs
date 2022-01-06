@@ -17,18 +17,20 @@ namespace Pacman
         private int _currentLevel;
         private Level _level;
         private ILayout _layout;
+        private int _numberOfDotsRemaining;
 
-        public Engine(ILayout layout)
+        public Engine(ILayout layout, IUserInput input, IOutput output)
         {
             _gridBuilder = new GridBuilder();
-            _output = new ConsoleOutput();
-            _input = new UserInput();
+            _output = output;
+            _input = input;
             _gameScore = 0;
             _currentLevel = 1;
             _livesLeft = 3;
             _characterList = new List<Character>();
             _layout = layout;
             _level = new Level(1, _layout);
+            _numberOfDotsRemaining = _layout.GetStartingNumberOfDots();
         }
 
         public void RunProgram()
@@ -81,17 +83,18 @@ namespace Pacman
         {
             Grid grid = gameState.GetGrid();
             
-            while (grid.GetDotsRemaining() > 0 && gameState.GetLivesLeft() > 0)
+            while (_numberOfDotsRemaining > 0 && gameState.GetLivesLeft() > 0)
             {
                 gameState = PlayOneTick(gameState);
                 grid = gameState.GetGrid();
                 _output.DisplayGrid(gameState);
             }
             
-            if (grid.GetDotsRemaining() == 0)
+            if (_numberOfDotsRemaining == 0)
             {
                 _currentLevel++;
                 _level = new Level(_currentLevel, _layout);
+                _numberOfDotsRemaining = _layout.GetStartingNumberOfDots();
 
                 _characterList = CreateCharacterList(gameState.GetCharacterList().First(), _level);
 
@@ -143,6 +146,7 @@ namespace Pacman
 
             if (grid.GetPoint(coordinate) == DisplaySymbol.Dot && character.GetType() == typeof(PacmanCharacter))
             {
+                _numberOfDotsRemaining--;
                 int gameScore = gameState.GetScore() + 1;
                 gameState = new GameState(grid, gameScore, gameState.GetLevel(),  gameState.GetLivesLeft(), gameState.GetCharacterList());
 
@@ -180,8 +184,9 @@ namespace Pacman
         public GameState UpdateGameStateForPacmanDeath(GameState gameState, Level level)
         {
             int livesLeft = gameState.GetLivesLeft() - 1;
+            Grid grid = _gridBuilder.UpdateGrid(gameState.GetGrid(), DisplaySymbol.Monster, gameState.GetCharacterList().First().Coordinate);
             gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
-            Grid grid = _gridBuilder.UpdateGrid(gameState.GetGrid(), DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
+            grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
 
             return new GameState(grid, gameState.GetScore(), gameState.GetLevel(),
                 livesLeft, gameState.GetCharacterList());

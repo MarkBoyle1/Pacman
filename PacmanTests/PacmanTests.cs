@@ -29,7 +29,7 @@ namespace PacmanTests
                 new List<Coordinate>(), 
                 new List<Coordinate>()
             );
-            Engine _engine = new Engine(layout);
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3,3);
             Character pacman =
@@ -108,10 +108,10 @@ namespace PacmanTests
                 19,
                 21
             );
-            Engine _engine = new Engine(layout);
+            IUserInput input = new TestInput(new List<string>{Constants.North});
+            Engine _engine = new Engine(layout, input, new ConsoleOutput());
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
-            IUserInput input = new TestInput(new List<string>{Constants.North});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
             List<Character> characterList = new List<Character>() {pacman};
             grid = _engine.PlaceCharactersOnGrid(grid, characterList);
@@ -134,11 +134,11 @@ namespace PacmanTests
                 19,
                 21
             );
-            Engine _engine = new Engine(layout);
+            IUserInput input = new TestInput(new List<string>{Constants.West});
+            Engine _engine = new Engine(layout, input, new ConsoleOutput());
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
-            IUserInput input = new TestInput(new List<string>{Constants.West});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
             List<Character> characterList = new List<Character>() {pacman};
 
@@ -162,11 +162,12 @@ namespace PacmanTests
                 19,
                 21
             );
-            Engine _engine = new Engine(layout);
+            IUserInput input = new TestInput(new List<string>{Constants.West});
+            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
-            IUserInput input = new TestInput(new List<string>{Constants.West});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
             List<Character> characterList = new List<Character>() {pacman};
 
@@ -190,12 +191,13 @@ namespace PacmanTests
                 19,
                 21
             );
-            Engine _engine = new Engine(layout);
+            IUserInput input = new TestInput(new List<string>{Constants.West, Constants.North, Constants.East});
+            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
             );
             
-            IUserInput input = new TestInput(new List<string>{Constants.West, Constants.North, Constants.East});
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(1,1));
             List<Character> characterList = new List<Character>() {pacman};
 
