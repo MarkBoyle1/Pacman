@@ -24,6 +24,11 @@ namespace Pacman
         {
             string input = GetValidInput();
 
+            if (input == Constants.Save)
+            {
+                throw new InputIsSaveException();
+            }
+
             Coordinate coordinate = ConvertDirectionInputIntoCoordinate(input, grid.GetWidth(), grid.GetHeight());
             
             List<Coordinate> possibleMoves = GetPossibleMoves(Coordinate, grid);
@@ -41,7 +46,7 @@ namespace Pacman
                     }
                 }
 
-                _output.DisplayMessage(OutputMessages.InvalidMove);
+                _output.DisplayMessage(OutputMessages.InvalidInput);
                 input = GetValidInput();
                 
                 coordinate = ConvertDirectionInputIntoCoordinate(input, grid.GetWidth(), grid.GetHeight());
@@ -74,12 +79,13 @@ namespace Pacman
                 Constants.East,
                 Constants.North,
                 Constants.South,
-                Constants.West
+                Constants.West,
+                Constants.Save
             };
 
             while (!possibleInputs.Contains(input))
             {
-                _output.DisplayMessage(OutputMessages.InvalidMove);
+                _output.DisplayMessage(OutputMessages.InvalidInput);
                 input = _input.GetUserInput();
             }
 

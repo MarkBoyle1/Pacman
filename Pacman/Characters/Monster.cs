@@ -6,7 +6,7 @@ namespace Pacman
     public class Monster : Character
     {
         private Random _random = new Random();
-        private bool _currentlyOnADot;
+        public bool _currentlyOnADot  { get; set; }
         public Monster(Coordinate coordinate, bool isOnDot)
         {
             Coordinate = coordinate;

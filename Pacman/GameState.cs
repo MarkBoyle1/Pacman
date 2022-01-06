@@ -4,11 +4,11 @@ namespace Pacman
 {
     public class GameState
     {
-        private Grid _grid;
-        private int _score;
-        private int _level;
-        private int _livesLeft;
-        private List<Character> _characterList;
+        public Grid _grid { get; set; }
+        public int _score { get; set; }
+        public int _level { get; set; }
+        public int _livesLeft { get; set; }
+        public List<Character> _characterList { get; set; }
 
         public GameState(Grid grid, int score, int level, int livesLeft, List<Character> characterList)
         {

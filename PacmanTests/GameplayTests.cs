@@ -10,7 +10,8 @@ namespace PacmanTests
     {
         private GridBuilder _gridBuilder = new GridBuilder();
         private string _testHighScoreFilePath = "../../../../Pacman/TestHighScore.csv";
-
+        private string _testSavedGameFilePath = "../../../../Pacman/TestSavedGame.json";
+        
         [Fact]
         public void given_PacmanMovesIntoDot_when_PlayOneTick_then_ScoreIncreasesByOne()
         {
@@ -329,6 +330,63 @@ namespace PacmanTests
             highScore = _engine.UpdateHighScoreIfRequired(gameScore, highScore);
             
             Assert.Equal(2, highScore);
+        }
+        
+        [Fact]
+        public void
+            given_SavedGameFileScoreEqualsThirteen_when_LoadSavedGame_then_GameStateScoreEqualsThirteen()
+        {
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(0,0), 
+                new List<Coordinate>(),
+                new List<Coordinate>(), 
+                new List<Coordinate>()
+                
+            );
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
+
+            GameState gameState = _engine.LoadPreviousGame();
+            
+            Assert.Equal(13, gameState._score);
+        }
+        
+        [Fact]
+        public void
+            given_SavedGameFileLivesLeftEqualsTwo_when_LoadSavedGame_then_GameStateLivesLeftEqualsTwo()
+        {
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(0,0), 
+                new List<Coordinate>(),
+                new List<Coordinate>(), 
+                new List<Coordinate>()
+                
+            );
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
+
+            GameState gameState = _engine.LoadPreviousGame();
+            
+            Assert.Equal(2, gameState._livesLeft);
+        }
+        
+        [Fact]
+        public void
+            given_SavedGameFileLevelEqualsOne_when_LoadSavedGame_then_GameStateLevelEqualsOne()
+        {
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(0,0), 
+                new List<Coordinate>(),
+                new List<Coordinate>(), 
+                new List<Coordinate>()
+                
+            );
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
+
+            GameState gameState = _engine.LoadPreviousGame();
+            
+            Assert.Equal(1, gameState._level);
         }
     }
 }

@@ -2,8 +2,8 @@ namespace Pacman
 {
     public class Coordinate
     {
-        private int Row;
-        private int Column;
+        public int Row  { get; set; }
+        public int Column  { get; set; }
 
         public Coordinate(int row, int column)
         {

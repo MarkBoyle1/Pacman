@@ -5,8 +5,8 @@ namespace Pacman
 {
     public abstract class Character
     {
-        public string Symbol;
-        public Coordinate Coordinate;
+        public string Symbol  { get; set; }
+        public Coordinate Coordinate  { get; set; }
         public virtual Coordinate GetMove(Grid grid)
         {
             return new Coordinate(1, 1);
