@@ -6,9 +6,13 @@ namespace Pacman
     public class GridBuilder
     {
 
-        public Grid GenerateInitialGrid(int width, int height, List<Coordinate> wallCoordinates,
-            List<Coordinate> blankSpacesCoordinates)
+        public Grid GenerateInitialGrid(ILayout layout)
         {
+            int width = layout.GetGridWidth();
+            int height = layout.GetGridHeight();
+            List<Coordinate> wallCoordinates = layout.GetWallCoordinates();
+            List<Coordinate> blankSpacesCoordinates = layout.GetBlankSpacesCoordinates();
+                
             Grid grid = GenerateEmptyGrid(width, height);
             grid = AddWalls(grid, wallCoordinates);
             grid = AddBlankSpaces(grid, blankSpacesCoordinates);

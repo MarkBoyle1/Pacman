@@ -10,6 +10,7 @@ namespace Pacman
     {
         private IUserInput _input;
         private IOutput _output;
+        
         public PacmanCharacter(IUserInput input, IOutput output, Coordinate startingPosition)
             : base()
         {

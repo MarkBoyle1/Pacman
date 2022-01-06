@@ -1,13 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
 namespace Pacman
 {
-    public class OriginalLayoutLevel : ILevel
+    public class OriginalLayout : ILayout
     {
         private const int GridWidth = 19;
         private const int GridHeight = 21;
         private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
+        private int _numberOfMonsters = 4;
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -233,6 +235,11 @@ namespace Pacman
             new Coordinate(11, 18)
         };
 
+        public int GetStartingNumberOfDots()
+        {
+            int startingNumberOfDots = GridHeight * GridWidth  - wallCoordinates.Count - blankSpacesCoordinates.Count - 1;
+            return startingNumberOfDots;
+        }
         public int GetGridWidth()
         {
             return GridWidth;
@@ -256,6 +263,11 @@ namespace Pacman
         public Coordinate GetPacmanStartingPosition()
         {
             return PacmanStartingPosition;
+        }
+        
+        public int GetStartingNumberOfMonsters()
+        {
+            return _numberOfMonsters;
         }
     }
 }

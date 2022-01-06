@@ -106,6 +106,11 @@ namespace Pacman
             }
             
             return coordinate;
-        }   
+        }
+
+        public virtual bool IsOnADot()
+        {
+            return true;
+        }
     }
 }
