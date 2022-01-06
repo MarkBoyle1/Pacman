@@ -6,5 +6,6 @@ namespace Pacman
         public const string West = "a";
         public const string North = "w";
         public const string South = "s";
+        public const string HighScoreFilePath = "HighScore.csv";
     }
 }

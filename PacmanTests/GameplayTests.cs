@@ -9,13 +9,14 @@ namespace PacmanTests
     public class GameplayTests
     {
         private GridBuilder _gridBuilder = new GridBuilder();
+        private string _testHighScoreFilePath = "../../../../Pacman/TestHighScore.csv";
 
         [Fact]
         public void given_PacmanMovesIntoDot_when_PlayOneTick_then_ScoreIncreasesByOne()
         {
             ILayout layout = new TestLayout(new Coordinate(1, 1), new List<Coordinate>(), new List<Coordinate>(), new List<Coordinate>());
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateInitialGrid(layout); 
             
@@ -41,7 +42,7 @@ namespace PacmanTests
                 new List<Coordinate>()
                 );
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
             
@@ -60,7 +61,7 @@ namespace PacmanTests
         public void given_PacmanIsTheOnlyCharacterOnTheGrid_when_PlayOneTick_then_CharacterListCountEqualsOne()
         {
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(new TestLayout( new Coordinate(1,1), new List<Coordinate>(), new List<Coordinate>(), new List<Coordinate>()), input, new ConsoleOutput());
+            Engine _engine = new Engine(new TestLayout( new Coordinate(1,1), new List<Coordinate>(), new List<Coordinate>(), new List<Coordinate>()), input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             
@@ -87,7 +88,7 @@ namespace PacmanTests
                 
             );
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
             
@@ -115,7 +116,7 @@ namespace PacmanTests
                     1
             );
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
             Level level = new Level(1, layout);
@@ -144,7 +145,7 @@ namespace PacmanTests
                     1
             );
             IUserInput input = new TestInput(new List<string>{Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
             Level level = new Level(1, layout);
             
@@ -175,7 +176,7 @@ namespace PacmanTests
                 
             );
             IUserInput input = new TestInput(new List<string>() {Constants.North});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(1, 1));
@@ -203,7 +204,7 @@ namespace PacmanTests
                 new List<Coordinate>()
                 
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
             Level level = new Level(1, layout);
 
@@ -230,7 +231,7 @@ namespace PacmanTests
                 
             );
             IUserInput input = new TestInput(new List<string>() {Constants.North});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Level level = new Level(1, layout);
             
@@ -270,7 +271,7 @@ namespace PacmanTests
                 
             );
             IUserInput input = new TestInput(new List<string>() {Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
         
@@ -284,6 +285,50 @@ namespace PacmanTests
             gameState = _engine.PlayOneTick(gameState);
         
             Assert.Equal(2, gameState.GetLivesLeft());
+        }
+
+        [Fact]
+        public void
+            given_GameScoreEqualsThree_and_HighScoreEqualsTwo_when_UpdateHighScoreIfRequired_then_return_Three()
+        {
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(0,0), 
+                new List<Coordinate>(),
+                new List<Coordinate>(), 
+                new List<Coordinate>()
+                
+            );
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
+            
+            int gameScore = 3;
+            int highScore = 2;
+
+            highScore = _engine.UpdateHighScoreIfRequired(gameScore, highScore);
+            
+            Assert.Equal(3, highScore);
+        }
+        
+        [Fact]
+        public void
+            given_GameScoreEqualsOne_and_HighScoreEqualsTwo_when_UpdateHighScoreIfRequired_then_return_Two()
+        {
+            ILayout layout = new TestLayout
+            (
+                new Coordinate(0,0), 
+                new List<Coordinate>(),
+                new List<Coordinate>(), 
+                new List<Coordinate>()
+                
+            );
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
+            
+            int gameScore = 1;
+            int highScore = 2;
+
+            highScore = _engine.UpdateHighScoreIfRequired(gameScore, highScore);
+            
+            Assert.Equal(2, highScore);
         }
     }
 }

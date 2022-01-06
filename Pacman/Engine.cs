@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Pacman.Input;
 using Pacman.Output;
@@ -12,6 +13,7 @@ namespace Pacman
         private IOutput _output;
         private IUserInput _input;
         private int _gameScore;
+        private int _highScore;
         private int _livesLeft;
         private List<Character> _characterList;
         private int _currentLevel;
@@ -19,8 +21,9 @@ namespace Pacman
         private ILayout _layout;
         private int _numberOfDotsRemaining;
 
-        public Engine(ILayout layout, IUserInput input, IOutput output)
+        public Engine(ILayout layout, IUserInput input, IOutput output, string highScoreFilePath = Constants.HighScoreFilePath)
         {
+            _highScore = Convert.ToInt16(File.ReadAllText(highScoreFilePath));
             _gridBuilder = new GridBuilder();
             _output = output;
             _input = input;
@@ -45,6 +48,7 @@ namespace Pacman
             
             GameState gameState = new GameState(grid, _gameScore, _currentLevel, _livesLeft, _characterList);
             
+            _output.SetHighScore(_highScore);
             _output.DisplayGrid(gameState);
             
             while(gameState.GetLivesLeft() > 0)
@@ -52,6 +56,10 @@ namespace Pacman
                 gameState = PlayOneLevel(gameState, _level);
                 _output.DisplayGrid(gameState);
             }
+
+            _highScore = UpdateHighScoreIfRequired(gameState.GetScore(), _highScore);
+            File.WriteAllTextAsync(Constants.HighScoreFilePath, _highScore.ToString());
+
         }
 
         public List<Character> CreateCharacterList(Character pacman, Level level)
@@ -208,6 +216,17 @@ namespace Pacman
             }
 
             return false;
+        }
+
+        public int UpdateHighScoreIfRequired(int gameScore, int highScore)
+        {
+            if (gameScore > highScore)
+            {
+                highScore = gameScore;
+                _output.SetHighScore(highScore);
+            }
+
+            return highScore;
         }
     }
 }

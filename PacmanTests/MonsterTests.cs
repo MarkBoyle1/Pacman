@@ -9,6 +9,8 @@ namespace PacmanTests
     public class MonsterTests
     {
         private GridBuilder _gridBuilder = new GridBuilder();
+        private string _testHighScoreFilePath = "../../../../Pacman/TestHighScore.csv";
+
         
         [Fact]
         public void given_levelHasOneMonster_when_GetMonsters_then_returns_ListOfOneMonster()
@@ -43,7 +45,7 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
            
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
@@ -112,7 +114,7 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3, 3);
@@ -141,7 +143,7 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
 
             Grid grid = _gridBuilder.GenerateInitialGrid
@@ -172,7 +174,7 @@ namespace PacmanTests
                 3,
                 1
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
 
             Grid grid = _gridBuilder.GenerateInitialGrid
@@ -203,7 +205,7 @@ namespace PacmanTests
                 3,
                 2
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
             );

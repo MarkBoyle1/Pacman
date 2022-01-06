@@ -5,5 +5,6 @@ namespace Pacman.Output
         public void DisplayGrid(GameState gameState);
         public void DisplayMessage(string message);
         public void DisplayDeathAnimation(GameState gameState);
+        public void SetHighScore(int highScore);
     }
 }

@@ -9,13 +9,12 @@ namespace PacmanTests
     public class PacmanTests
     {
         private GridBuilder _gridBuilder;
-        // private Engine _engine;
         private Grid _defaultGrid;
+        private string _testHighScoreFilePath = "../../../../Pacman/TestHighScore.csv";
 
         public PacmanTests()
         {
             _gridBuilder = new GridBuilder();
-            // _engine = new Engine();
             _defaultGrid = _gridBuilder.GenerateEmptyGrid(19, 21);
         }
         
@@ -29,7 +28,7 @@ namespace PacmanTests
                 new List<Coordinate>(), 
                 new List<Coordinate>()
             );
-            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput());
+            Engine _engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(3,3);
             Character pacman =
@@ -109,7 +108,7 @@ namespace PacmanTests
                 21
             );
             IUserInput input = new TestInput(new List<string>{Constants.North});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), new Coordinate(11,9));
@@ -135,7 +134,7 @@ namespace PacmanTests
                 21
             );
             IUserInput input = new TestInput(new List<string>{Constants.West});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
 
@@ -163,7 +162,7 @@ namespace PacmanTests
                 21
             );
             IUserInput input = new TestInput(new List<string>{Constants.West});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
 
             Grid grid = _gridBuilder.GenerateEmptyGrid(19, 21);
@@ -192,7 +191,7 @@ namespace PacmanTests
                 21
             );
             IUserInput input = new TestInput(new List<string>{Constants.West, Constants.North, Constants.East});
-            Engine _engine = new Engine(layout, input, new ConsoleOutput());
+            Engine _engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout

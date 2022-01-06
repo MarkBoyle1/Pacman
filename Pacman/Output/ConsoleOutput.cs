@@ -6,6 +6,12 @@ namespace Pacman.Output
 {
     public class ConsoleOutput : IOutput
     {
+        private int _highScore;
+
+        public void SetHighScore(int highScore)
+        {
+            _highScore = highScore;
+        }
         public void DisplayMessage(string message)
         {
             Console.WriteLine(message);
@@ -16,7 +22,8 @@ namespace Pacman.Output
             Console.Clear();
             Console.Write(" Lives: " + gameState.GetLivesLeft());
             Console.Write(" Score: " + gameState.GetScore());
-            Console.WriteLine(" Level: " + gameState.GetLevel());
+            Console.Write(" Level: " + gameState.GetLevel());
+            Console.WriteLine(" High Score: " + _highScore);
 
             for(int row = 0; row < grid.GetHeight(); row++)
             {
@@ -59,7 +66,8 @@ namespace Pacman.Output
                 Console.Clear();
                 Console.Write(" Lives: " + gameState.GetLivesLeft());
                 Console.Write(" Score: " + gameState.GetScore());
-                Console.WriteLine(" Level: " + gameState.GetLevel());
+                Console.Write(" Level: " + gameState.GetLevel());
+                Console.WriteLine(" High Score: " + _highScore);
 
                 for (int row = 0; row < grid.GetHeight(); row++)
                 {
