@@ -12,7 +12,13 @@ namespace PacmanTests
             ILayout layout = new TestLayout
             (
                 new Coordinate(0, 0), 
-                new List<Coordinate>(){new Coordinate(0,1), new Coordinate(0,2), new Coordinate(1,1), new Coordinate(2,1)},
+                new List<Coordinate>()
+                {
+                    new Coordinate(0,1), 
+                    new Coordinate(0,2), 
+                    new Coordinate(1,1), 
+                    new Coordinate(2,1)
+                },
                 new List<Coordinate>(), 
                 new List<Coordinate>(),
                 3,

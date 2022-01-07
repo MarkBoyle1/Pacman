@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Pacman;
 using Xunit;
@@ -57,12 +56,8 @@ namespace PacmanTests
         public void given_OriginalLayoutLevelContainsWallAtTwoTwo_when_GenerateInitialGrid_then_TwoTwoContainsWall()
         {
             ILayout layout = new OriginalLayout();
-            Level level = new Level(1, layout);
 
-            Grid grid = _gridBuilder.GenerateInitialGrid
-            (
-                layout
-            );
+            Grid grid = _gridBuilder.GenerateInitialGrid(layout);
 
             Assert.Equal(DisplaySymbol.Wall, grid.GetPoint(new Coordinate(2,2)));
         }
