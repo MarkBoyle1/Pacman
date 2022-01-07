@@ -348,7 +348,7 @@ namespace PacmanTests
 
             GameState gameState = _engine.LoadPreviousGame();
             
-            Assert.Equal(13, gameState._score);
+            Assert.Equal(13, gameState.Score);
         }
         
         [Fact]
@@ -367,7 +367,7 @@ namespace PacmanTests
 
             GameState gameState = _engine.LoadPreviousGame();
             
-            Assert.Equal(2, gameState._livesLeft);
+            Assert.Equal(2, gameState.LivesLeft);
         }
         
         [Fact]
@@ -386,7 +386,7 @@ namespace PacmanTests
 
             GameState gameState = _engine.LoadPreviousGame();
             
-            Assert.Equal(1, gameState._level);
+            Assert.Equal(1, gameState.Level);
         }
     }
 }

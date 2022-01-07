@@ -4,45 +4,50 @@ namespace Pacman
 {
     public class GameState
     {
-        public Grid _grid { get; set; }
-        public int _score { get; set; }
-        public int _level { get; set; }
-        public int _livesLeft { get; set; }
-        public List<Character> _characterList { get; set; }
+        public Grid Grid { get; set; }
+        public int Score { get; set; }
+        public int Level { get; set; }
+        public int LivesLeft { get; set; }
+        public List<Character> CharacterList { get; set; }
 
         public GameState(Grid grid, int score, int level, int livesLeft, List<Character> characterList)
         {
-            _grid = grid;
-            _score = score;
-            _level = level;
-            _livesLeft = livesLeft;
-            _characterList = characterList;
+            Grid = grid;
+            Score = score;
+            Level = level;
+            LivesLeft = livesLeft;
+            CharacterList = characterList;
         }
 
         public int GetScore()
         {
-            return _score;
+            return Score;
         }
 
         public Grid GetGrid()
         {
-            return _grid;
+            return Grid;
         }
 
         public int GetLevel()
         {
-            return _level;
+            return Level;
         }
 
         public int GetLivesLeft()
         {
-            return _livesLeft;
+            return LivesLeft;
             
         }
 
         public List<Character> GetCharacterList()
         {
-            return _characterList;
+            return CharacterList;
+        }
+
+        public Character GetPacman()
+        {
+            return CharacterList.Find(x => x.GetType() == typeof(PacmanCharacter));
         }
     }
 }

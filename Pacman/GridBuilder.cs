@@ -16,7 +16,7 @@ namespace Pacman
             Grid grid = GenerateEmptyGrid(width, height);
             grid = AddWalls(grid, wallCoordinates);
             grid = AddBlankSpaces(grid, blankSpacesCoordinates);
-            int dotsRemaining = height * width - wallCoordinates.Count - blankSpacesCoordinates.Count;
+            int dotsRemaining = layout.GetStartingNumberOfDots();
 
             return new Grid(grid.Surface, dotsRemaining);
         }

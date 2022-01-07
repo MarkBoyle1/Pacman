@@ -9,7 +9,7 @@ namespace Pacman
         private const int GridWidth = 19;
         private const int GridHeight = 21;
         private Coordinate PacmanStartingPosition = new Coordinate(11, 9);
-        private int _numberOfMonsters = 4;
+        private int _numberOfMonsters = 6;
 
         private List<Coordinate> wallCoordinates = new List<Coordinate>()
         {
@@ -157,8 +157,6 @@ namespace Pacman
             new Coordinate(15, 3),
             new Coordinate(15, 15),
             new Coordinate(15, 18),
-            new Coordinate(16, 0),
-            new Coordinate(16, 18),
             new Coordinate(16, 0),
             new Coordinate(16, 1),
             new Coordinate(16, 3),

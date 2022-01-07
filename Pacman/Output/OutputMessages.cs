@@ -6,5 +6,7 @@ namespace Pacman.Output
 
         public const string AskToStartNewGameOrLoadPreviousGame =
             "Would you like to start a new game or load the previous game (0 = new game, 1 = saved game):";
+
+        public const string GameSaved = "Gamed Saved.";
     }
 }

@@ -16,15 +16,19 @@ namespace Pacman.Output
         {
             Console.WriteLine(message);
         }
-        public void DisplayGrid(GameState gameState)
+
+        public void DisplayGameState(GameState gameState)
         {
-            Grid grid = gameState.GetGrid();
             Console.Clear();
             Console.Write(" Lives: " + gameState.GetLivesLeft());
             Console.Write(" Score: " + gameState.GetScore());
             Console.Write(" Level: " + gameState.GetLevel());
             Console.WriteLine(" High Score: " + _highScore);
-
+            
+            DisplayGrid(gameState.GetGrid());
+        }
+        public void DisplayGrid(Grid grid)
+        {
             for(int row = 0; row < grid.GetHeight(); row++)
             {
                 for(int column = 0; column < grid.GetWidth(); column++)
@@ -106,6 +110,22 @@ namespace Pacman.Output
                 wallColour = wallColour == ConsoleColor.Blue ? ConsoleColor.White : ConsoleColor.Blue;
 
                 Thread.Sleep(200);
+            }
+        }
+        
+        public void DisplayEatingAnimation(GameState gameState, Grid gridWithMouthOpen, Grid gridWithMouthClosed)
+        {
+            Grid grid = gridWithMouthOpen;
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Clear();
+                Console.Write(" Lives: " + gameState.GetLivesLeft());
+                Console.Write(" Score: " + gameState.GetScore());
+                Console.Write(" Level: " + gameState.GetLevel());
+                Console.WriteLine(" High Score: " + _highScore);
+
+                DisplayGrid(grid);
+                grid = i == 0 ? gridWithMouthClosed : gridWithMouthOpen;
             }
         }
     }

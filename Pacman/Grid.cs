@@ -4,12 +4,12 @@ namespace Pacman
     public class Grid
     {
         public string[][] Surface  { get; set; }
-        public int _dotsRemaining  { get; set; }
+        public int DotsRemaining  { get; set; }
 
         public Grid(string[][] surface, int dotsRemaining)
         {
             Surface = surface;
-            _dotsRemaining = dotsRemaining;
+            DotsRemaining = dotsRemaining;
         }
 
         public string GetPoint(Coordinate coordinate)
@@ -29,7 +29,7 @@ namespace Pacman
 
         public int GetDotsRemaining()
         {
-            return _dotsRemaining;
+            return DotsRemaining;
         }
         
     }
