@@ -18,6 +18,7 @@ namespace Pacman
             _output = output;
             Coordinate = startingPosition;
             Symbol = DisplaySymbol.DefaultPacmanStartingSymbol;
+            IsOnADot = false;
         }
 
         public override Coordinate GetMove(Grid grid)

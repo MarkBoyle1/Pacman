@@ -6,12 +6,11 @@ namespace Pacman
     public class Monster : Character
     {
         private Random _random = new Random();
-        public bool _currentlyOnADot  { get; set; }
         public Monster(Coordinate coordinate, bool isOnDot)
         {
             Coordinate = coordinate;
             Symbol = DisplaySymbol.Monster;
-            _currentlyOnADot = isOnDot;
+            IsOnADot = isOnDot;
         }
 
         public override Coordinate GetMove(Grid grid)
@@ -34,15 +33,11 @@ namespace Pacman
             int randomIndex = _random.Next(0, possibleMoves.Count);
 
             Coordinate move = possibleMoves[randomIndex];
-            _currentlyOnADot = grid.GetPoint(move) == DisplaySymbol.Dot;
+            IsOnADot = grid.GetPoint(move) == DisplaySymbol.Dot;
             Coordinate = move;
 
             return move;
         }
-
-        public override bool IsOnADot()
-        {
-            return _currentlyOnADot;
-        }
+        
     }
 }

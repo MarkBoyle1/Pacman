@@ -7,6 +7,7 @@ namespace Pacman
     {
         public string Symbol  { get; set; }
         public Coordinate Coordinate  { get; set; }
+        public bool IsOnADot { get; set; }
         public virtual Coordinate GetMove(Grid grid)
         {
             return new Coordinate(1, 1);
@@ -107,10 +108,6 @@ namespace Pacman
             
             return coordinate;
         }
-
-        public virtual bool IsOnADot()
-        {
-            return true;
-        }
+        
     }
 }

@@ -183,7 +183,7 @@ namespace Pacman
             //Updating the space of the old location for the character
             if (character.GetType() == typeof(Monster))
             {
-                string gridSymbol = character.IsOnADot() ? DisplaySymbol.Dot : DisplaySymbol.BlankSpace;
+                string gridSymbol = character.IsOnADot ? DisplaySymbol.Dot : DisplaySymbol.BlankSpace;
                 grid = _gridBuilder.UpdateGrid(grid, gridSymbol, character.GetCoordinate());
             }
             else
@@ -294,11 +294,11 @@ namespace Pacman
             JProperty levelProperty = properties[2];
             JProperty livesLeftProperty = properties[3];
             JProperty characterListProperty = properties[4];
-
+            
             Grid grid = new Grid
                 (
                     gridProperty.Value["Surface"].ToObject<string[][]>(), 
-                    gridProperty.Value["_dotsRemaining"].ToObject<int>()
+                    gridProperty.Value["DotsRemaining"].ToObject<int>()
                 );
 
             int score = scoreProperty.Value.ToObject<int>();
@@ -312,6 +312,7 @@ namespace Pacman
                 Character character;
                 string row = characterListProperty.Value[i]["Coordinate"]["Row"].ToString();
                 string column = characterListProperty.Value[i]["Coordinate"]["Column"].ToString();
+                string isOnADot = characterListProperty.Value[i]["IsOnADot"].ToString();
 
                 if (i == 0)
                 {
@@ -319,7 +320,7 @@ namespace Pacman
                 }
                 else
                 {
-                    character = new Monster(new Coordinate(Convert.ToInt16(row), Convert.ToInt16(column)), true);
+                    character = new Monster(new Coordinate(Convert.ToInt16(row), Convert.ToInt16(column)), isOnADot == "True");
                 }
 
                 characterList.Add(character);

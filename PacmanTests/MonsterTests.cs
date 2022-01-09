@@ -114,7 +114,7 @@ namespace PacmanTests
         }
         
         [Fact]
-        public void given_MonsterIsCurrentlyOverADot__when_MakeCharacterMove_then_DotRemainsThereAfterMonsterHasLeft()
+        public void given_MonsterIsCurrentlyOverADot_when_MakeCharacterMove_then_DotRemainsThereAfterMonsterHasLeft()
         {
             ILayout layout = new TestLayout
             (
@@ -205,7 +205,6 @@ namespace PacmanTests
                 1
             );
             Engine engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath);
-
 
             Grid grid = _gridBuilder.GenerateInitialGrid
             (layout
