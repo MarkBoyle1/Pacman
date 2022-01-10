@@ -32,18 +32,19 @@ namespace PacmanTests
             
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout); 
             
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characterList = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characterList);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characterList);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = engine.PlayOneTick(gameState);
             
-            Assert.Equal(1, gameState.GetScore());
+            Assert.Equal(1, gameState.Score);
         }
         
         [Fact]
@@ -59,18 +60,19 @@ namespace PacmanTests
             
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
             
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characterList = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characterList);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characterList);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = engine.PlayOneTick(gameState);
             
-            Assert.Equal(DisplaySymbol.PacmanEastFacing, gameState.GetGrid().GetPoint(new Coordinate(1,2)));
+            Assert.Equal(DisplaySymbol.PacmanEastFacing, gameState.Grid.GetPoint(new Coordinate(1,2)));
         }
 
         [Fact]
@@ -85,18 +87,19 @@ namespace PacmanTests
             );
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
             
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characterList = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characterList);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characterList);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = engine.PlayOneTick(gameState);
             
-            Assert.Equal(7, gameState.GetGrid().GetDotsRemaining());
+            Assert.Equal(7, gameState.Grid.DotsRemaining);
         }
 
         [Fact]
@@ -113,19 +116,20 @@ namespace PacmanTests
             );
             IUserInput input = new TestInput(new List<string>{Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
             Level level = new Level(1, layout);
 
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characterList = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characterList);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characterList);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
             gameState = engine.PlayOneLevel(gameState, level);
             
-            Assert.Equal(2, gameState.GetLevel());
+            Assert.Equal(2, gameState.LevelNumber);
         }
         
         [Fact]
@@ -144,10 +148,11 @@ namespace PacmanTests
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
             Grid grid = _gridBuilder.GenerateEmptyGrid(2, 1);
             Level level = new Level(1, layout);
-            
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, level,
+                _testSavedGameFilePath);
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characterList = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characterList);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characterList);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characterList);
 
@@ -191,10 +196,10 @@ namespace PacmanTests
 
             gameState = engine.PlayOneTick(gameState);
             
-            Assert.Equal(DisplaySymbol.BlankSpace, gameState.GetGrid().GetPoint(new Coordinate(1,1)));
-            Assert.Equal(DisplaySymbol.PacmanNorthFacing, gameState.GetGrid().GetPoint(new Coordinate(0,1)));
-            Assert.Equal(DisplaySymbol.Dot, gameState.GetGrid().GetPoint(new Coordinate(3,3)));
-            Assert.Equal(DisplaySymbol.Monster, gameState.GetGrid().GetPoint(new Coordinate(3,2)));
+            Assert.Equal(DisplaySymbol.BlankSpace, gameState.Grid.GetPoint(new Coordinate(1,1)));
+            Assert.Equal(DisplaySymbol.PacmanNorthFacing, gameState.Grid.GetPoint(new Coordinate(0,1)));
+            Assert.Equal(DisplaySymbol.Dot, gameState.Grid.GetPoint(new Coordinate(3,3)));
+            Assert.Equal(DisplaySymbol.Monster, gameState.Grid.GetPoint(new Coordinate(3,2)));
         }
 
         [Fact]
@@ -220,7 +225,7 @@ namespace PacmanTests
 
             gameState = engine.UpdateGameStateForPacmanDeath(gameState, level);
             
-            Assert.Equal(2, gameState.GetLivesLeft());
+            Assert.Equal(2, gameState.LivesLeft);
         }
         
         [Fact]
@@ -232,25 +237,26 @@ namespace PacmanTests
                 new List<Coordinate>(),
                 new List<Coordinate>(), 
                 new List<Coordinate>()
-                
             );
+            
             IUserInput input = new TestInput(new List<string>() {Constants.North});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
 
             Level level = new Level(1, layout);
-            
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, level,
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
 
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             List<Character> characters = new List<Character>() {pacman};
-            grid = engine.PlaceCharactersOnGrid(grid, characters);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characters);
 
             GameState gameState = new GameState(grid, 0, 1, 3, characters);
-            gameState = engine.MakeCharacterMove(gameState, pacman);
+            gameState = engine.MoveCharacter(gameState, pacman);
 
             gameState = engine.UpdateGameStateForPacmanDeath(gameState, level);
             
-            Assert.Equal(DisplaySymbol.DefaultPacmanStartingSymbol, gameState.GetGrid().GetPoint(new Coordinate(1,1)));
+            Assert.Equal(DisplaySymbol.DefaultPacmanStartingSymbol, gameState.Grid.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
@@ -268,19 +274,20 @@ namespace PacmanTests
             );
             IUserInput input = new TestInput(new List<string>() {Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
         
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             Character monster = new Monster(new Coordinate(0, 1), true);
             List<Character> characters = new List<Character>() {pacman, monster};
             
-            grid = engine.PlaceCharactersOnGrid(grid, characters);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characters);
         
             GameState gameState = new GameState(grid, 0, 1, 3, characters);
             gameState = engine.PlayOneTick(gameState);
         
-            Assert.Equal(2, gameState.GetLivesLeft());
+            Assert.Equal(2, gameState.LivesLeft);
         }
 
         [Fact]
@@ -304,19 +311,20 @@ namespace PacmanTests
             );
             IUserInput input = new TestInput(new List<string>() {Constants.East});
             Engine engine = new Engine(layout, input, new ConsoleOutput(), _testHighScoreFilePath);
-
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), input, new Level(1, layout),
+                _testSavedGameFilePath);
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
         
             Character pacman = new PacmanCharacter(input, new ConsoleOutput(), layout.GetPacmanStartingPosition());
             Character monster = new Monster(new Coordinate(0, 1), true);
             List<Character> characters = new List<Character>() {pacman, monster};
             
-            grid = engine.PlaceCharactersOnGrid(grid, characters);
+            grid = gameSetUp.PlaceCharactersOnGrid(grid, characters);
         
             GameState gameState = new GameState(grid, 0, 1, 3, characters);
             gameState = engine.PlayOneTick(gameState);
         
-            Assert.Equal(2, gameState.GetLivesLeft());
+            Assert.Equal(2, gameState.LivesLeft);
         }
 
         [Fact]
@@ -375,9 +383,10 @@ namespace PacmanTests
                 new List<Coordinate>()
                 
             );
-            Engine engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
-
-            GameState gameState = engine.LoadPreviousGame();
+            
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), new UserInput(), new Level(1, layout),
+                _testSavedGameFilePath);
+            GameState gameState = gameSetUp.LoadPreviousGame();
             
             Assert.Equal(13, gameState.Score);
         }
@@ -394,9 +403,10 @@ namespace PacmanTests
                 new List<Coordinate>()
                 
             );
-            Engine engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
-
-            GameState gameState = engine.LoadPreviousGame();
+            
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), new UserInput(), new Level(1, layout),
+                _testSavedGameFilePath);
+            GameState gameState = gameSetUp.LoadPreviousGame();
             
             Assert.Equal(2, gameState.LivesLeft);
         }
@@ -411,13 +421,13 @@ namespace PacmanTests
                 new List<Coordinate>(),
                 new List<Coordinate>(), 
                 new List<Coordinate>()
-                
             );
-            Engine engine = new Engine(layout, new TestInput(new List<string>()), new ConsoleOutput(), _testHighScoreFilePath, _testSavedGameFilePath);
-
-            GameState gameState = engine.LoadPreviousGame();
             
-            Assert.Equal(1, gameState.Level);
+            GameSetUp gameSetUp = new GameSetUp(new ConsoleOutput(), new UserInput(), new Level(1, layout),
+                _testSavedGameFilePath);
+            GameState gameState = gameSetUp.LoadPreviousGame();
+            
+            Assert.Equal(1, gameState.LevelNumber);
         }
     }
 }

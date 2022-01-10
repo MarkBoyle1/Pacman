@@ -3,8 +3,8 @@ namespace Pacman
 {
     public class Grid
     {
-        public string[][] Surface  { get; set; }
-        public int DotsRemaining  { get; set; }
+        public string[][] Surface  { get;}
+        public int DotsRemaining  { get;}
 
         public Grid(string[][] surface, int dotsRemaining)
         {

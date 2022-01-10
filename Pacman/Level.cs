@@ -5,10 +5,9 @@ namespace Pacman
 {
     public class Level
     {
-        private int _levelNumber;
         private int _numberOfMonsters;
         private ILayout _layout;
-        private Random _random = new Random();
+        private Random _random;
         private Coordinate _pacmanStartingLocation;
         private List<Character> _monsterList;
         private List<Coordinate> _spacesAlreadyTaken;
@@ -16,14 +15,14 @@ namespace Pacman
         public Level(int levelNumber, ILayout layout)
         {
             _layout = layout;
-            _levelNumber = levelNumber;
             _numberOfMonsters = layout.GetStartingNumberOfMonsters() + (2 * (levelNumber - 1));
             _pacmanStartingLocation = _layout.GetPacmanStartingPosition();
-            _spacesAlreadyTaken = CreateSpacesAlreadyTakenList();
+            _spacesAlreadyTaken = CreateListOfSpacesAlreadyTaken();
+            _random = new Random();
             _monsterList = CreateMonsters();
         }
 
-        public List<Coordinate> CreateSpacesAlreadyTakenList()
+        private List<Coordinate> CreateListOfSpacesAlreadyTaken()
         {
             List<Coordinate> spacesAlreadyTaken = new List<Coordinate>();
 

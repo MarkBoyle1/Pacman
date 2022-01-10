@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
-using Newtonsoft.Json.Linq;
 using Pacman.Exceptions;
 using Pacman.Input;
 using Pacman.Output;
@@ -14,128 +12,56 @@ namespace Pacman
     {
         private GridBuilder _gridBuilder;
         private IOutput _output;
-        private IUserInput _input;
-        private int _gameScore;
         private int _highScore;
-        private int _livesLeft;
         private List<Character> _characterList;
         private int _currentLevel = 1;
         private Level _level;
         private ILayout _layout;
         private int _numberOfDotsRemaining;
-        private string _savedGameFilePath;
+        private GameSetUp _gameSetUp;
 
         public Engine(ILayout layout, IUserInput input, IOutput output, string highScoreFilePath = Constants.HighScoreFilePath, string savedGameFilePath = Constants.SavedGameFilePath)
         {
             _highScore = Convert.ToInt16(File.ReadAllText(highScoreFilePath));
             _gridBuilder = new GridBuilder();
             _output = output;
-            _input = input;
             _characterList = new List<Character>();
             _layout = layout;
             _level = new Level(1, _layout);
             _numberOfDotsRemaining = _layout.GetStartingNumberOfDots();
-            _savedGameFilePath = savedGameFilePath;
+            _gameSetUp = new GameSetUp(output, input, _level);
         }
 
         public void RunProgram()
         {
-            bool userWantsToStartNewGame = CheckIfUserWantsToStartNewGame();
-            GameState gameState;
+            _output.DisplayMessage(OutputMessages.Welcome);
+            GameState gameState = _gameSetUp.GetInitialGameState();
 
-            if (userWantsToStartNewGame)
-            {
-                Character pacman = new PacmanCharacter(_input, _output, _level.GetPacmanStartingPosition());
-                
-                _characterList = CreateCharacterList(pacman, _level);
-                
-                Grid grid = _gridBuilder.GenerateInitialGrid(_level.GetLayout());
-                
-                grid = PlaceCharactersOnGrid(grid, _characterList);
-                
-                _gameScore = 0;
-                _currentLevel = 1;
-                _livesLeft = 3;
-                
-                gameState = new GameState(grid, _gameScore, _currentLevel, _livesLeft, _characterList);
-            }
-            else
-            {
-                gameState = LoadPreviousGame();
-                _characterList = gameState.GetCharacterList();
-                _currentLevel = gameState.Level;
-                _livesLeft = gameState.LivesLeft;
-                _gameScore = gameState.Score;
-            }
-            
+            _numberOfDotsRemaining = gameState.Grid.DotsRemaining;
+            _characterList = gameState.CharacterList;
+            _currentLevel = gameState.LevelNumber;
+
             _output.SetHighScore(_highScore);
             _output.DisplayGameState(gameState);
             
-            while(gameState.GetLivesLeft() > 0)
+            while(gameState.LivesLeft > 0)
             {
                 gameState = PlayOneLevel(gameState, _level);
                 _output.DisplayGameState(gameState);
             }
 
-            _highScore = UpdateHighScoreIfRequired(gameState.GetScore(), _highScore);
+            _highScore = UpdateHighScoreIfRequired(gameState.Score, _highScore);
             File.WriteAllTextAsync(Constants.HighScoreFilePath, _highScore.ToString());
         }
-
-        private bool CheckIfUserWantsToStartNewGame()
-        {
-            _output.DisplayMessage(OutputMessages.AskToStartNewGameOrLoadPreviousGame);
-            string response = _input.GetUserInput();
-
-            while (true)
-            {
-                if (response == Constants.ResponseToStartNewGame)
-                {
-                    return true;
-                }
-                
-                if (response == Constants.ResponseToLoadSavedGame)
-                {
-                    return false;
-                }
-                
-                _output.DisplayMessage(OutputMessages.InvalidInput);
-                response = _input.GetUserInput();
-            }
-        }
-
-        public List<Character> CreateCharacterList(Character pacman, Level level)
-        {
-            List<Character> characters = new List<Character>();
-            characters.Add(pacman);
-
-            List<Character> monsters = level.GetMonsters();
-
-            foreach (var monster in monsters)
-            {
-                characters.Add(monster);
-            }
-
-            return characters;
-        }
-
-        public Grid PlaceCharactersOnGrid(Grid grid, List<Character> characters)
-        {
-            foreach (var character in characters)
-            {
-                grid = _gridBuilder.UpdateGrid(grid, character.Symbol, character.Coordinate);
-            }
-
-            return grid;
-        }
-
+        
         public GameState PlayOneLevel(GameState gameState, Level level)
         {
-            Grid grid = gameState.GetGrid();
+            Grid grid = gameState.Grid;
             
-            while (_numberOfDotsRemaining > 0 && gameState.GetLivesLeft() > 0)
+            while (_numberOfDotsRemaining > 0 && gameState.LivesLeft > 0)
             {
                 gameState = PlayOneTick(gameState);
-                grid = gameState.GetGrid();
+                grid = gameState.Grid;
                 _output.DisplayGameState(gameState);
             }
             
@@ -145,24 +71,25 @@ namespace Pacman
                 _level = new Level(_currentLevel, _layout);
                 _numberOfDotsRemaining = _layout.GetStartingNumberOfDots();
 
-                _characterList = CreateCharacterList(gameState.GetPacman(), _level);
+                _characterList = _gameSetUp.CreateCharacterList(_level);
 
                 gameState.GetPacman().Coordinate = level.GetPacmanStartingPosition();
                 gameState.GetPacman().Symbol = DisplaySymbol.DefaultPacmanStartingSymbol;
                 
                 grid = _gridBuilder.GenerateInitialGrid(level.GetLayout());
                 
-                grid = PlaceCharactersOnGrid(grid, _characterList);
+                grid = _gameSetUp.PlaceCharactersOnGrid(grid, _characterList);
             }
             
-            return new GameState(grid, gameState.GetScore(), _currentLevel, gameState.GetLivesLeft(), _characterList);
+            return new GameState(grid, gameState.Score, _currentLevel, gameState.LivesLeft, _characterList);
         }
 
         public GameState PlayOneTick(GameState gameState)
         {
-            foreach (var character in gameState.GetCharacterList())
+            foreach (var character in gameState.CharacterList)
             {
-                gameState = MakeCharacterMove(gameState, character);
+                gameState = MoveCharacter(gameState, character);
+                
                 bool pacmanIsDead = CheckForPacmanDeath(gameState);
 
                 if (pacmanIsDead)
@@ -176,9 +103,9 @@ namespace Pacman
             return gameState;
         }
 
-        public GameState MakeCharacterMove(GameState gameState, Character character)
+        public GameState MoveCharacter(GameState gameState, Character character)
         {
-            Grid grid = gameState.GetGrid();
+            Grid grid = gameState.Grid;
 
             //Updating the space of the old location for the character
             if (character.GetType() == typeof(Monster))
@@ -200,7 +127,7 @@ namespace Pacman
             catch (InputIsSaveException)
             {
                 SaveGame(gameState);
-                _output.DisplayMessage(OutputMessages.GameSaved);
+                _output.DisplayMessageWithDelay(OutputMessages.GameSaved);
                 return gameState;
             }
 
@@ -208,8 +135,8 @@ namespace Pacman
             if (grid.GetPoint(coordinate) == DisplaySymbol.Dot && character.GetType() == typeof(PacmanCharacter))
             {
                 _numberOfDotsRemaining--;
-                int gameScore = gameState.GetScore() + 1;
-                gameState = new GameState(grid, gameScore, gameState.GetLevel(),  gameState.GetLivesLeft(), gameState.GetCharacterList());
+                int gameScore = gameState.Score + 1;
+                gameState = new GameState(grid, gameScore, gameState.LevelNumber,  gameState.LivesLeft, gameState.CharacterList);
 
                 gameState = MakeEatingAnimation(gameState, character, coordinate);
                 return gameState;
@@ -217,12 +144,12 @@ namespace Pacman
             
             grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
 
-            return new GameState(grid, gameState.GetScore(), gameState.GetLevel(), gameState.GetLivesLeft(), gameState.GetCharacterList());
+            return new GameState(grid, gameState.Score, gameState.LevelNumber, gameState.LivesLeft, gameState.CharacterList);
         }
 
         private GameState MakeEatingAnimation(GameState gameState, Character character, Coordinate coordinate)
         {
-            Grid grid = gameState.GetGrid();
+            Grid grid = gameState.Grid;
             string eatingSymbol =
                 character.Symbol is DisplaySymbol.PacmanEastFacing or DisplaySymbol.PacmanWestFacing
                     ? DisplaySymbol.PacmanHorizontalEating
@@ -230,7 +157,7 @@ namespace Pacman
 
             grid = _gridBuilder.UpdateGrid(grid, character.Symbol, coordinate);
             Grid gridWithMouthClosed = _gridBuilder.UpdateGrid(grid, eatingSymbol, coordinate);
-            gameState = new GameState(grid, gameState.GetScore(), gameState.GetLevel(), gameState.GetLivesLeft(), gameState.GetCharacterList());
+            gameState = new GameState(grid, gameState.Score, gameState.LevelNumber, gameState.LivesLeft, gameState.CharacterList);
 
             _output.DisplayEatingAnimation(gameState, grid, gridWithMouthClosed);
             
@@ -239,19 +166,23 @@ namespace Pacman
 
         public GameState UpdateGameStateForPacmanDeath(GameState gameState, Level level)
         {
-            int livesLeft = gameState.GetLivesLeft() - 1;
-            Grid grid = _gridBuilder.UpdateGrid(gameState.GetGrid(), DisplaySymbol.Monster, gameState.GetCharacterList().First().Coordinate);
-            gameState.GetCharacterList().First().Coordinate = level.GetPacmanStartingPosition();
+            int livesLeft = gameState.LivesLeft - 1;
+            
+            //Leave the monster in the location where the death occured
+            Grid grid = _gridBuilder.UpdateGrid(gameState.Grid, DisplaySymbol.Monster, gameState.GetPacman().Coordinate);
+            
+            //Put pacman back in starting position
+            gameState.GetPacman().Coordinate = level.GetPacmanStartingPosition();
             grid = _gridBuilder.UpdateGrid(grid, DisplaySymbol.DefaultPacmanStartingSymbol, level.GetPacmanStartingPosition());
 
-            return new GameState(grid, gameState.GetScore(), gameState.GetLevel(),
-                livesLeft, gameState.GetCharacterList());
+            return new GameState(grid, gameState.Score, gameState.LevelNumber,
+                livesLeft, gameState.CharacterList);
         }
 
         private bool CheckForPacmanDeath(GameState gameState)
         {
-            List<Character> characterList = gameState.GetCharacterList();
-            Coordinate pacmanLocation = characterList[0].Coordinate;
+            List<Character> characterList = gameState.CharacterList;
+            Coordinate pacmanLocation = gameState.GetPacman().Coordinate;
 
             foreach (var character in characterList)
             {
@@ -281,52 +212,6 @@ namespace Pacman
         {
             string gameStateJsonString = JsonSerializer.Serialize(gameState);
             File.WriteAllTextAsync(Constants.SavedGameFilePath, gameStateJsonString);
-        }
-        
-        public GameState LoadPreviousGame()
-        {
-            var myJsonString = File.ReadAllText(_savedGameFilePath);
-            var myJObject = JObject.Parse(myJsonString);
-            List<JProperty> properties = myJObject.Properties().ToList();
-            
-            JProperty gridProperty = properties[0];
-            JProperty scoreProperty = properties[1];
-            JProperty levelProperty = properties[2];
-            JProperty livesLeftProperty = properties[3];
-            JProperty characterListProperty = properties[4];
-            
-            Grid grid = new Grid
-                (
-                    gridProperty.Value["Surface"].ToObject<string[][]>(), 
-                    gridProperty.Value["DotsRemaining"].ToObject<int>()
-                );
-
-            int score = scoreProperty.Value.ToObject<int>();
-            int level = levelProperty.Value.ToObject<int>();
-            int livesLeft = livesLeftProperty.Value.ToObject<int>();
-            
-            List<Character> characterList = new List<Character>();
-
-            for (int i = 0; i < characterListProperty.Value.Count(); i++)
-            {
-                Character character;
-                string row = characterListProperty.Value[i]["Coordinate"]["Row"].ToString();
-                string column = characterListProperty.Value[i]["Coordinate"]["Column"].ToString();
-                string isOnADot = characterListProperty.Value[i]["IsOnADot"].ToString();
-
-                if (i == 0)
-                {
-                    character = new PacmanCharacter(_input, _output, new Coordinate(Convert.ToInt16(row), Convert.ToInt16(column)));
-                }
-                else
-                {
-                    character = new Monster(new Coordinate(Convert.ToInt16(row), Convert.ToInt16(column)), isOnADot == "True");
-                }
-
-                characterList.Add(character);
-            }
-
-            return new GameState(grid, score, level, livesLeft, characterList);
         }
     }
 }

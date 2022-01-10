@@ -47,7 +47,8 @@ namespace PacmanTests
                     new Coordinate(1, 0), 
                     new Coordinate(2, 1)
                 }, 
-                new List<Coordinate>());
+                new List<Coordinate>()
+            );
 
             Grid grid = _gridBuilder.GenerateInitialGrid(layout);
 

@@ -16,16 +16,22 @@ namespace Pacman.Output
         {
             Console.WriteLine(message);
         }
+        
+        public void DisplayMessageWithDelay(string message)
+        {
+            Console.WriteLine(message);
+            Thread.Sleep(1500);
+        }
 
         public void DisplayGameState(GameState gameState)
         {
             Console.Clear();
-            Console.Write(" Lives: " + gameState.GetLivesLeft());
-            Console.Write(" Score: " + gameState.GetScore());
-            Console.Write(" Level: " + gameState.GetLevel());
+            Console.Write(" Lives: " + gameState.LivesLeft);
+            Console.Write(" Score: " + gameState.Score);
+            Console.Write(" Level: " + gameState.LevelNumber);
             Console.WriteLine(" High Score: " + _highScore);
             
-            DisplayGrid(gameState.GetGrid());
+            DisplayGrid(gameState.Grid);
         }
         public void DisplayGrid(Grid grid)
         {
@@ -60,17 +66,17 @@ namespace Pacman.Output
 
         public void DisplayDeathAnimation(GameState gameState)
         {
-            Coordinate pacmanLocation = gameState.GetCharacterList().First().Coordinate;
-            Grid grid = gameState.GetGrid();
+            Coordinate pacmanLocation = gameState.GetPacman().Coordinate;
+            Grid grid = gameState.Grid;
             ConsoleColor monsterColour = ConsoleColor.Red;
             ConsoleColor wallColour = ConsoleColor.Blue;
 
             for (int i = 0; i < 10; i++)
             {
                 Console.Clear();
-                Console.Write(" Lives: " + gameState.GetLivesLeft());
-                Console.Write(" Score: " + gameState.GetScore());
-                Console.Write(" Level: " + gameState.GetLevel());
+                Console.Write(" Lives: " + gameState.LivesLeft);
+                Console.Write(" Score: " + gameState.Score);
+                Console.Write(" Level: " + gameState.LevelNumber);
                 Console.WriteLine(" High Score: " + _highScore);
 
                 for (int row = 0; row < grid.GetHeight(); row++)
@@ -119,9 +125,9 @@ namespace Pacman.Output
             for (int i = 0; i < 3; i++)
             {
                 Console.Clear();
-                Console.Write(" Lives: " + gameState.GetLivesLeft());
-                Console.Write(" Score: " + gameState.GetScore());
-                Console.Write(" Level: " + gameState.GetLevel());
+                Console.Write(" Lives: " + gameState.LivesLeft);
+                Console.Write(" Score: " + gameState.Score);
+                Console.Write(" Level: " + gameState.LevelNumber);
                 Console.WriteLine(" High Score: " + _highScore);
 
                 DisplayGrid(grid);

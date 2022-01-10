@@ -2,6 +2,7 @@ namespace Pacman.Output
 {
     public class OutputMessages
     {
+        public const string Welcome = "Welcome to Pacman!";
         public const string InvalidInput = "Invalid input. Please try again:";
 
         public const string AskToStartNewGameOrLoadPreviousGame =

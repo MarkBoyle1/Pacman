@@ -5,7 +5,6 @@ namespace Pacman
 {
     public class GridBuilder
     {
-
         public Grid GenerateInitialGrid(ILayout layout)
         {
             int width = layout.GetGridWidth();
